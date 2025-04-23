@@ -1,1796 +1,893 @@
 <!DOCTYPE html>
-
 <html lang="es">
-
 <head>
-
-    <meta charset="UTF-8">
-
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Calculadora Tablaroca TITÁN v4.2</title>
-
-    <script src="https://cdn.tailwindcss.com"></script>
-
-    <link rel="manifest" href="manifest.json">
-
-    <link rel="icon" href="icons/icon-192x192.png" type="image/png">
-
-    <link rel="apple-touch-icon" href="icons/icon-192x192.png">
-
-    <meta name="theme-color" content="#3f6212">
-
-    <link rel="preconnect" href="https://rsms.me/">
-
-    <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
-
-
-
-    <style>
-
-        /* Custom styles v4.2 */
-
-        html { scroll-behavior: smooth; }
-
-        body { font-family: 'Inter', sans-serif; background-color: #f7fee7; /* lime-50 */}
-
-        input[type=number]::-webkit-inner-spin-button,
-
-        input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
-
-        input[type=number] { -moz-appearance: textfield; }
-
-        #lista-materiales li { padding: 7px 0; }
-
-        #mensaje-error, #mensaje-info, #mensaje-warning {
-
-            padding: 12px 16px; border-radius: 8px; margin-bottom: 1rem; border: 1px solid; font-size: 0.9rem;
-
-        }
-
-        #mensaje-error { background-color: #fee2e2; border-color: #f87171; color: #b91c1c; } /* red */
-
-        #mensaje-info { background-color: #e0f2fe; border-color: #7dd3fc; color: #0369a1; } /* sky */
-
-        #mensaje-warning { background-color: #fefce8; border-color: #facc15; color: #a16207; } /* yellow */
-
-        /* Custom focus ring */
-
-        input:focus, select:focus, button:focus {
-
-             outline: none;
-
-             box-shadow: 0 0 0 3px rgba(132, 204, 22, 0.5); /* lime-500 focus */
-
-        }
-
-        input, select { border-color: #a1a1aa; /* zinc-400 */ }
-
-        input:focus, select:focus { border-color: #84cc16 !important; /* lime-500 focus border */ }
-
-
-
-        .section-header {
-
-            font-size: 1.3rem; /* text-xl */
-
-            font-weight: 700; /* font-bold */
-
-            color: #365314; /* olive-900 */
-
-            margin-bottom: 1.25rem; /* mb-5 */
-
-            padding-bottom: 0.5rem; /* pb-2 */
-
-            border-bottom: 2px solid #a3e635; /* lime-400 */
-
-        }
-
-        label { margin-bottom: 0.3rem; display: block; font-weight: 500; /* medium */}
-
-        .input-field {
-
-            width: 100%; padding: 0.6rem 0.8rem; /* Ajuste padding */
-
-            border-radius: 0.375rem; /* rounded-md */
-
-            border: 1px solid; box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); /* shadow-sm */
-
-            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-
-        }
-
-        .select-field { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E"); background-position: right 0.5rem center; background-repeat: no-repeat; background-size: 1.5em 1.5em; padding-right: 2.5rem; }
-
-        .calc-button {
-
-            background-color: #65a30d; /* lime-600 */ color: white;
-
-            font-weight: bold; padding: 0.8rem 2.2rem; /* Ajuste padding */
-
-            border-radius: 0.5rem; /* rounded-lg */ box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* shadow-md */
-
-            transition: all 0.15s ease-in-out; text-transform: uppercase; letter-spacing: 0.05em;
-
-        }
-
-        .calc-button:hover { background-color: #4d7c0f; /* lime-700 */ box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* shadow-lg */ transform: translateY(-2px); }
-
-        .result-item { border-bottom: 1px solid #e5e7eb; /* gray-200 */ padding-bottom: 0.6rem; }
-
-        .tooltip-icon {
-
-            display: inline-block; width: 1em; height: 1em; margin-left: 4px;
-
-            background-color: #a3a3a3; color: white; border-radius: 50%;
-
-            text-align: center; font-size: 0.7em; line-height: 1em; cursor: help;
-
-            font-style: normal; font-weight: bold;
-
-        }
-
-        .copy-button {
-
-            background-color: #eab308; /* yellow-500 */ color: #422006; /* yellow-900 */
-
-            font-weight: 600; padding: 0.5rem 1rem; border-radius: 0.375rem;
-
-            margin-top: 1.5rem; transition: background-color 0.15s ease-in-out;
-
-        }
-
-        .copy-button:hover { background-color: #f59e0b; /* amber-500 */ }
-
-        /* Estilo para inputs de tamaño personalizado */
-
-        .custom-size-input { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; } /* Ajuste para ancho y alto */
-
-    </style>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora Tablaroca TITÁN v4.2</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="icons/icon-192x192.png" type="image/png">
+    <link rel="apple-touch-icon" href="icons/icon-192x192.png">
+    <meta name="theme-color" content="#3f6212">
+    <link rel="preconnect" href="https://rsms.me/">
+    <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+
+    <style>
+        /* Custom styles v4.2 */
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Inter', sans-serif; background-color: #f7fee7; /* lime-50 */}
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+        input[type=number] { -moz-appearance: textfield; }
+        #lista-materiales li { padding: 7px 0; }
+        #mensaje-error, #mensaje-info, #mensaje-warning {
+            padding: 12px 16px; border-radius: 8px; margin-bottom: 1rem; border: 1px solid; font-size: 0.9rem;
+        }
+        #mensaje-error { background-color: #fee2e2; border-color: #f87171; color: #b91c1c; } /* red */
+        #mensaje-info { background-color: #e0f2fe; border-color: #7dd3fc; color: #0369a1; } /* sky */
+        #mensaje-warning { background-color: #fefce8; border-color: #facc15; color: #a16207; } /* yellow */
+        /* Custom focus ring */
+        input:focus, select:focus, button:focus {
+             outline: none;
+             box-shadow: 0 0 0 3px rgba(132, 204, 22, 0.5); /* lime-500 focus */
+        }
+        input, select { border-color: #a1a1aa; /* zinc-400 */ }
+        input:focus, select:focus { border-color: #84cc16 !important; /* lime-500 focus border */ }
+
+        .section-header {
+            font-size: 1.3rem; /* text-xl */
+            font-weight: 700; /* font-bold */
+            color: #365314; /* olive-900 */
+            margin-bottom: 1.25rem; /* mb-5 */
+            padding-bottom: 0.5rem; /* pb-2 */
+            border-bottom: 2px solid #a3e635; /* lime-400 */
+        }
+        label { margin-bottom: 0.3rem; display: block; font-weight: 500; /* medium */}
+        .input-field {
+            width: 100%; padding: 0.6rem 0.8rem; /* Ajuste padding */
+            border-radius: 0.375rem; /* rounded-md */
+            border: 1px solid; box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); /* shadow-sm */
+            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+        }
+        .select-field { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E"); background-position: right 0.5rem center; background-repeat: no-repeat; background-size: 1.5em 1.5em; padding-right: 2.5rem; }
+        .calc-button {
+            background-color: #65a30d; /* lime-600 */ color: white;
+            font-weight: bold; padding: 0.8rem 2.2rem; /* Ajuste padding */
+            border-radius: 0.5rem; /* rounded-lg */ box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* shadow-md */
+            transition: all 0.15s ease-in-out; text-transform: uppercase; letter-spacing: 0.05em;
+        }
+        .calc-button:hover { background-color: #4d7c0f; /* lime-700 */ box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* shadow-lg */ transform: translateY(-2px); }
+        .result-item { border-bottom: 1px solid #e5e7eb; /* gray-200 */ padding-bottom: 0.6rem; }
+        .tooltip-icon {
+            display: inline-block; width: 1em; height: 1em; margin-left: 4px;
+            background-color: #a3a3a3; color: white; border-radius: 50%;
+            text-align: center; font-size: 0.7em; line-height: 1em; cursor: help;
+            font-style: normal; font-weight: bold;
+        }
+        .copy-button {
+            background-color: #eab308; /* yellow-500 */ color: #422006; /* yellow-900 */
+            font-weight: 600; padding: 0.5rem 1rem; border-radius: 0.375rem;
+            margin-top: 1.5rem; transition: background-color 0.15s ease-in-out;
+        }
+        .copy-button:hover { background-color: #f59e0b; /* amber-500 */ }
+        /* Estilo para inputs de tamaño personalizado */
+        .custom-size-input { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; } /* Ajuste para ancho y alto */
+    </style>
 </head>
-
 <body class="text-gray-900 antialiased">
 
-
-
-    <div class="container mx-auto p-4 md:p-8 max-w-5xl">
-
-        <header class="mb-10 text-center">
-
-            <h1 class="text-4xl md:text-5xl font-bold text-lime-700">Calculadora TITÁN Tablaroca</h1>
-
-            <p class="text-gray-600 mt-3 text-lg">La estimación más completa para tus proyectos PRO.</p>
-
-        </header>
-
-
-
-        <main class="bg-white p-6 md:p-8 rounded-xl shadow-2xl space-y-10">
-
-
-
-            <div>
-
-                <h2 class="section-header">1. Dimensiones Generales</h2>
-
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
-
-                    <div>
-
-                        <label for="largo" class="text-sm text-gray-700">Largo Perimetral (m):</label>
-
-                        <input type="number" id="largo" name="largo" step="0.01" min="0.1" required class="input-field" placeholder="Ej: 5.5">
-
-                    </div>
-
-                    <div>
-
-                        <label for="ancho" class="text-sm text-gray-700">Ancho Perimetral (m):</label>
-
-                        <input type="number" id="ancho" name="ancho" step="0.01" min="0.1" required class="input-field" placeholder="Ej: 3.0">
-
-                    </div>
-
-                    <div>
-
-                        <label for="alto" class="text-sm text-gray-700">Alto Total (m):</label>
-
-                        <input type="number" id="alto" name="alto" step="0.01" min="0.1" required class="input-field" placeholder="Ej: 2.80">
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-
-            <div>
-
-                <h2 class="section-header">2. Configuración del Trabajo</h2>
-
-                <div class="mb-6">
-
-                   <span class="block text-sm font-medium text-gray-700 mb-2">Elementos a Calcular:</span>
-
-                   <div class="flex items-center space-x-6">
-
-                       <div class="flex items-center">
-
-                           <input type="checkbox" id="calcular_muros" name="tipo_trabajo" value="muros" class="h-4 w-4 text-lime-600 border-gray-400 rounded focus:ring-lime-500 cursor-pointer">
-
-                           <label for="calcular_muros" class="ml-2 block text-sm text-gray-900 cursor-pointer">Muros Divisorios</label>
-
-                       </div>
-
-                       <div class="flex items-center">
-
-                           <input type="checkbox" id="calcular_plafon" name="tipo_trabajo" value="plafon" class="h-4 w-4 text-lime-600 border-gray-400 rounded focus:ring-lime-500 cursor-pointer">
-
-                           <label for="calcular_plafon" class="ml-2 block text-sm text-gray-900 cursor-pointer">Plafón Corrido</label>
-
-                       </div>
-
-                   </div>
-
-                </div>
-
-
-
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-10 gap-y-8">
-
-                    <div id="opciones_muros" class="space-y-5 hidden bg-lime-50 p-4 rounded-lg border border-lime-200">
-
-                        <h3 class="font-semibold text-lg text-lime-800 border-b border-lime-300 pb-2 mb-4">Opciones de Muros</h3>
-
-                        <div>
-
-                            <label for="muros_internos_ml" class="text-sm text-gray-700">Metros Lineales Muros Internos (m):</label>
-
-                            <input type="number" id="muros_internos_ml" name="muros_internos_ml" step="0.01" min="0" value="0" class="input-field" placeholder="Ej: 12.5">
-
-                            <p class="text-xs text-gray-500 mt-1">Suma de la longitud de todos los muros internos.</p>
-
-                        </div>
-
-                        <div>
-
-                            <label for="panel_muro" class="text-sm text-gray-700">Tipo de Panel:</label>
-
-                            <select id="panel_muro" name="panel_muro" class="input-field select-field bg-white">
-
-                                <option value="estandar">Estándar / Ligero (1/2")</option>
-
-                                <option value="rh">Resistente Humedad (RH 1/2")</option>
-
-                                <option value="cemento">Panel de Cemento (1/2")</option>
-
-                            </select>
-
-                        </div>
-
-                         <div>
-
-                            <label for="doble_capa_muro" class="text-sm text-gray-700">Capas de Panel:</label>
-
-                            <div class="flex items-center">
-
-                                <input type="checkbox" id="doble_capa_muro" name="doble_capa_muro" class="h-4 w-4 text-lime-600 border-gray-400 rounded focus:ring-lime-500 cursor-pointer">
-
-                                <label for="doble_capa_muro" class="ml-2 block text-sm text-gray-900 cursor-pointer">Doble Capa (ambos lados)</label>
-
-                                <span class="tooltip-icon" title="Usar doble capa mejora aislamiento acústico y resistencia al fuego. Requiere tornillos más largos. Se aplica a ambos lados de muros internos y perimetrales.">?</span>
-
-                            </div>
-
-                        </div>
-
-                         <div>
-
-                            <label for="peralte_poste" class="text-sm text-gray-700">Peralte Poste (Ancho Muro):</label>
-
-                            <select id="peralte_poste" name="peralte_poste" class="input-field select-field bg-white">
-
-                                <option value="6.35">6.35 cm (2 1/2")</option>
-
-                                <option value="9.20">9.20 cm (3 5/8")</option>
-
-                                <option value="4.10">4.10 cm (1 5/8")</option>
-
-                                <option value="15.24">15.24 cm (6")</option>
-
-                            </select>
-
-                             <p class="text-xs text-gray-500 mt-1">Importante para cálculo de aislamiento.</p>
-
-                        </div>
-
-                         <div>
-
-                            <label for="calibre_poste" class="text-sm text-gray-700">Calibre Postes:</label>
-
-                            <select id="calibre_poste" name="calibre_poste" class="input-field select-field bg-white">
-
-                                <option value="26">Cal. 26 (Ligero)</option>
-
-                                <option value="22">Cal. 22 (Semi-Estruc.)</option>
-
-                                <option value="20">Cal. 20 (Estructural)</option>
-
-                            </select>
-
-                        </div>
-
-                         <div>
-
-                            <label for="calibre_canal" class="text-sm text-gray-700">Calibre Canales:</label>
-
-                            <select id="calibre_canal" name="calibre_canal" class="input-field select-field bg-white">
-
-                                <option value="26">Cal. 26 (Ligero)</option>
-
-                                <option value="22">Cal. 22 (Semi-Estruc.)</option>
-
-                                <option value="20">Cal. 20 (Estructural)</option>
-
-                            </select>
-
-                        </div>
-
-                        <div>
-
-                            <label for="espaciamiento" class="text-sm text-gray-700">Espaciamiento Postes:</label>
-
-                            <select id="espaciamiento" name="espaciamiento" class="input-field select-field bg-white">
-
-                                <option value="61">61 cm (Estándar)</option>
-
-                                <option value="40.6">40.6 cm (Rígido)</option>
-
-                            </select>
-
-                        </div>
-
-                         <div>
-
-                             <label for="incluir_aislamiento" class="text-sm text-gray-700">Aislamiento:</label>
-
-                             <div class="flex items-center">
-
-                                 <input type="checkbox" id="incluir_aislamiento" name="incluir_aislamiento" class="h-4 w-4 text-lime-600 border-gray-400 rounded focus:ring-lime-500 cursor-pointer">
-
-                                 <label for="incluir_aislamiento" class="ml-2 block text-sm text-gray-900 cursor-pointer">Incluir Aislamiento Térmico/Acústico</label>
-
-                                 <span class="tooltip-icon" title="Calcula rollos de aislamiento según el peralte del poste seleccionado para el área total de muros (perimetrales e internos).">?</span>
-
-                             </div>
-
-                         </div>
-
-                    </div>
-
-
-
-                    <div id="opciones_plafon" class="space-y-5 hidden bg-sky-50 p-4 rounded-lg border border-sky-200">
-
-                         <h3 class="font-semibold text-lg text-sky-800 border-b border-sky-300 pb-2 mb-4">Opciones de Plafón</h3>
-
-                         <div>
-
-                            <label for="panel_plafon" class="text-sm text-gray-700">Tipo de Panel:</label>
-
-                            <select id="panel_plafon" name="panel_plafon" class="input-field select-field bg-white">
-
-                                <option value="estandar">Estándar / Ligero (1/2")</option>
-
-                                <option value="rh">Resistente Humedad (RH 1/2")</option>
-
-                            </select>
-
-                        </div>
-
-                         <div>
-
-                            <label for="doble_capa_plafon" class="text-sm text-gray-700">Capas de Panel:</label>
-
-                            <div class="flex items-center">
-
-                                <input type="checkbox" id="doble_capa_plafon" name="doble_capa_plafon" class="h-4 w-4 text-lime-600 border-gray-400 rounded focus:ring-lime-500 cursor-pointer">
-
-                                <label for="doble_capa_plafon" class="ml-2 block text-sm text-gray-900 cursor-pointer">Doble Capa</label>
-
-                                <span class="tooltip-icon" title="Mejora rigidez y acústica del plafón. Requiere tornillos más largos.">?</span>
-
-                            </div>
-
-                        </div>
-
-                        <div>
-
-                            <label for="alto_plafon" class="text-sm text-gray-700">Altura Plafón Terminado (m):</label>
-
-                            <input type="number" id="alto_plafon" name="alto_plafon" step="0.01" min="0.1" class="input-field" placeholder="Ej: 2.50">
-
-                            <p class="text-xs text-gray-500 mt-1">Distancia del piso al plafón terminado.</p>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-
-             <div id="seccion_aberturas" class="hidden">
-
-                <h2 class="section-header">3. Aberturas en Muros (Perimetrales e Internos)</h2>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
-
-                    <div>
-
-                        <label for="num_puertas" class="text-sm font-medium text-gray-700">Número de Puertas:</label>
-
-                        <input type="number" id="num_puertas" name="num_puertas" value="0" step="1" min="0" class="input-field sm:w-1/2" placeholder="0">
-
-                        <div id="detalles_puertas" class="mt-4 space-y-4"></div>
-
-                    </div>
-
-                    <div>
-
-                        <label for="num_ventanas" class="text-sm font-medium text-gray-700">Número de Ventanas:</label>
-
-                        <input type="number" id="num_ventanas" name="num_ventanas" value="0" step="1" min="0" class="input-field sm:w-1/2" placeholder="0">
-
-                        <div id="detalles_ventanas" class="mt-4 space-y-4"></div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-
-            <div>
-
-                 <h2 class="section-header">4. Ajustes Finales</h2>
-
-                <label for="desperdicio" class="text-sm text-gray-700">Factor de Desperdicio (%):</label>
-
-                <input type="number" id="desperdicio" name="desperdicio" value="10" step="1" min="0" max="50" class="input-field sm:w-1/3" placeholder="Ej: 10">
-
-                 <p class="text-xs text-gray-500 mt-1">Recomendado: 5-10%. Aumentar si hay muchos cortes/complejidad.</p>
-
-            </div>
-
-
-
-            <div class="text-center pt-8">
-
-                <button id="calcularBtn" class="calc-button">
-
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 inline-block mr-2 -mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
-
-                    </svg>
-
-                    Calcular Materiales
-
-                </button>
-
-            </div>
-
-
-
-            <div id="resultados" class="mt-12 border-t-2 pt-8 border-lime-300">
-
-                <div class="flex justify-between items-center mb-5">
-
-                   <h2 class="text-2xl font-semibold text-gray-800">Resultados Estimados</h2>
-
-                   <button id="copyBtn" class="copy-button hidden">
-
-                       <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline-block mr-1 -mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-
-                         <path stroke-linecap="round" stroke-linejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
-
-                       </svg>
-
-                       Copiar Lista
-
-                   </button>
-
-                </div>
-
-                 <div id="mensaje-error" class="hidden"></div>
-
-                 <div id="mensaje-warning" class="hidden"></div>
-
-                 <div id="mensaje-info" class="hidden"></div>
-
-                 <div id="lista-materiales" class="text-gray-800 space-y-3">
-
-                    <p class="text-gray-500 italic">Ingresa datos y haz clic en calcular.</p>
-
-                </div>
-
-            </div>
-
-        </main>
-
-
-
-        <footer class="text-center text-gray-500 text-sm mt-12">
-
-            <p>Calculadora v4.2 - TITÁN.</p>
-
-            <p>⚠️ Estimación basada en factores estándar. Consulta fichas técnicas, normativas y a profesionales.</p>
-
-        </footer>
-
-    </div>
-
-
-
-    <script>
-
-        // --- CONSTANTES Y VALORES BASE v4.2 ---
-
-        const AREA_HOJA_TABLAROCA = 1.22 * 2.44; // m²
-
-        const LONGITUD_PERFIL = 3.05; // m
-
-        const LONGITUD_CINTA_PAPEL_ROLLO = 75; // m
-
-        const LONGITUD_CINTA_MALLA_ROLLO = 45; // m
-
-        const LONGITUD_ESQUINERO = 3.05; // m
-
-        const ALAMBRE_KG_POR_METRO_CAL12 = 0.055; // kg/m
-
-        const AMARRE_EXTRA_COLGANTE = 0.15; // m por lado
-
-        const ANCHO_PUERTA_STD = 0.90; // m
-
-        const ALTO_PUERTA_STD = 2.10; // m
-
-        const ANCHO_VENTANA_STD = 1.20; // m (Ejemplo)
-
-        const ALTO_VENTANA_STD = 1.00; // m (Ejemplo)
-
-        const AREA_BATT_AISLAMIENTO_MAP = { // m² por rollo según espesor (aproximado)
-
-            "4.10": 14.86, // 1.5" R6? Muy raro, usar referencia 2.5"
-
-            "6.35": 7.43,  // 2.5" R8
-
-            "9.20": 7.43,  // 3.5" R11 (misma cobertura, más grueso)
-
-            "15.24": 5.57  // 6" R19 (menos cobertura por rollo)
-
-        };
-
-
-
-        // Factores de rendimiento v4.2
-
-        const FACTORES = {
-
-            muro: {
-
-                // Por m² de superficie de muro (considerando AMBAS caras para internos)
-
-                panelYeso: 1.05, // Factor por m² de CADA CARA cubierta
-
-                compuestoStd: 0.90, // Factor por m² de CADA CARA cubierta
-
-                compuestoStdDoble: 1.2, // Factor por m² de CADA CARA cubierta
-
-                compuestoBasecoat: 1.2, // Factor por m² de CADA CARA cubierta
-
-                compuestoBasecoatDoble: 1.6, // Factor por m² de CADA CARA cubierta
-
-                cintaPapel: 1.10, // Factor por m² de CADA CARA cubierta
-
-                cintaMalla: 1.15, // Factor por m² de CADA CARA cubierta
-
-                tornilloPanel_S: 15, // Factor por m² de CADA CARA cubierta
-
-                tornilloPanel_Tek: 15, // Factor por m² de CADA CARA cubierta
-
-                tornilloPanelCemento: 18, // Factor por m² de CADA CARA cubierta
-
-                tornilloPanel_Doble_S: 18, // Factor por m² de CADA CARA cubierta
-
-                tornilloPanel_Doble_Tek: 18, // Factor por m² de CADA CARA cubierta
-
-
-
-                // Por m² de área de muro (estructura interna)
-
-                poste_61: 0.90 / LONGITUD_PERFIL, // Postes por m² de muro
-
-                poste_40_6: 1.25 / LONGITUD_PERFIL, // Postes por m² de muro
-
-                canalAmarre: 0.70 / LONGITUD_PERFIL, // Canales (sup+inf) por m² de muro (0.35 * 2 / L) -> Ajustado para m² de muro
-
-                tornilloFramer_Fino: 2.5, // Tornillos por m² de muro (estructura)
-
-                tornilloFramer_Tek: 2.5, // Tornillos por m² de muro (estructura)
-
-                fijadoresCanal: 1.6 // Fijadores (piso+techo) por m² de muro (0.8 * 2) -> Ajustado para m² de muro
-
-            },
-
-            plafon: {
-
-                // Por m² de área de plafón
-
-                panelYeso: 1.05,
-
-                canaletaCarga: 1.30 / LONGITUD_PERFIL, // Piezas por m²
-
-                canalListon: 2.00 / LONGITUD_PERFIL, // Piezas por m²
-
-                tornilloPanel_S: 16,
-
-                tornilloPanel_Doble_S: 20,
-
-                compuestoStd: 0.90,
-
-                compuestoStdDoble: 1.2,
-
-                cintaPapel: 1.10,
-
-                numColgantesPorM2: 1 / (1.22 * 1.22) // Aprox. 1 colgante por 1.5 m²
-
-            },
-
-            abertura: {
-
-                // Por cada abertura (puerta/ventana)
-
-                posteExtra: 2, // piezas
-
-                canalExtra: 1, // piezas (para dintel/antepecho)
-
-                tornilloPanelExtra: 30, // piezas (para fijar panel alrededor)
-
-                tornilloFramerExtra: 10, // piezas (para armar marco)
-
-                esquinero: 2 // piezas (jambas verticales)
-
-            }
-
-        };
-
-
-
-        // --- ELEMENTOS DEL DOM v4.2 ---
-
-        const largoInput = document.getElementById('largo');
-
-        const anchoInput = document.getElementById('ancho');
-
-        const altoInput = document.getElementById('alto');
-
-        const altoPlafonInput = document.getElementById('alto_plafon');
-
-        const murosInternosMlInput = document.getElementById('muros_internos_ml'); // <-- Nuevo
-
-        const panelMuroSelect = document.getElementById('panel_muro');
-
-        const panelPlafonSelect = document.getElementById('panel_plafon');
-
-        const dobleCapaMuroCheckbox = document.getElementById('doble_capa_muro');
-
-        const dobleCapaPlafonCheckbox = document.getElementById('doble_capa_plafon');
-
-        const peraltePosteSelect = document.getElementById('peralte_poste');
-
-        const calibrePosteSelect = document.getElementById('calibre_poste');
-
-        const calibreCanalSelect = document.getElementById('calibre_canal');
-
-        const espaciamientoSelect = document.getElementById('espaciamiento');
-
-        const incluirAislamientoCheckbox = document.getElementById('incluir_aislamiento');
-
-        const numPuertasInput = document.getElementById('num_puertas');
-
-        const detallesPuertasDiv = document.getElementById('detalles_puertas');
-
-        const numVentanasInput = document.getElementById('num_ventanas');
-
-        const detallesVentanasDiv = document.getElementById('detalles_ventanas');
-
-        const calcularMurosCheckbox = document.getElementById('calcular_muros');
-
-        const calcularPlafonCheckbox = document.getElementById('calcular_plafon');
-
-        const desperdicioInput = document.getElementById('desperdicio');
-
-        const calcularBtn = document.getElementById('calcularBtn');
-
-        const copyBtn = document.getElementById('copyBtn');
-
-        const listaMaterialesDiv = document.getElementById('lista-materiales');
-
-        const mensajeErrorDiv = document.getElementById('mensaje-error');
-
-        const mensajeWarningDiv = document.getElementById('mensaje-warning');
-
-        const mensajeInfoDiv = document.getElementById('mensaje-info');
-
-        const opcionesMurosDiv = document.getElementById('opciones_muros');
-
-        const opcionesPlafonDiv = document.getElementById('opciones_plafon');
-
-        const seccionAberturasDiv = document.getElementById('seccion_aberturas');
-
-
-
-
-
-        // --- EVENT LISTENERS v4.2 ---
-
-        calcularBtn.addEventListener('click', calcularMateriales);
-
-        copyBtn.addEventListener('click', copiarResultados);
-
-        calcularMurosCheckbox.addEventListener('change', toggleMurosOptions);
-
-        calcularPlafonCheckbox.addEventListener('change', togglePlafonOptions);
-
-        numPuertasInput.addEventListener('input', () => generarInputsAberturas('puertas'));
-
-        numVentanasInput.addEventListener('input', () => generarInputsAberturas('ventanas'));
-
-
-
-        // --- INICIALIZACIÓN v4.2 ---
-
-        toggleMurosOptions();
-
-        togglePlafonOptions();
-
-
-
-        // --- FUNCIONES v4.2 ---
-
-
-
-        function toggleMurosOptions() {
-
-            const show = calcularMurosCheckbox.checked;
-
-            opcionesMurosDiv.classList.toggle('hidden', !show);
-
-            seccionAberturasDiv.classList.toggle('hidden', !show); // Mostrar sección si muros está activo
-
-            if (show) {
-
-                generarInputsAberturas('puertas');
-
-                generarInputsAberturas('ventanas');
-
-            } else {
-
-                detallesPuertasDiv.innerHTML = '';
-
-                detallesVentanasDiv.innerHTML = '';
-
-                numPuertasInput.value = 0;
-
-                numVentanasInput.value = 0;
-
-                murosInternosMlInput.value = 0; // Limpiar metros internos si se desactiva muros
-
-            }
-
-        }
-
-        function togglePlafonOptions() {
-
-            const show = calcularPlafonCheckbox.checked;
-
-            opcionesPlafonDiv.classList.toggle('hidden', !show);
-
-             // No ocultar sección aberturas si muros sigue activo
-
-             if (!show && !calcularMurosCheckbox.checked) {
-
-                 seccionAberturasDiv.classList.add('hidden');
-
-             }
-
-        }
-
-
-
-        function generarInputsAberturas(tipo) {
-
-            const numInput = document.getElementById(`num_${tipo}`);
-
-            const detallesDiv = document.getElementById(`detalles_${tipo}`);
-
-            const numAberturas = parseInt(numInput?.value) || 0;
-
-
-
-            if (!numInput || !detallesDiv) return;
-
-
-
-            detallesDiv.innerHTML = '';
-
-            if (numAberturas <= 0) return;
-
-
-
-            const tipoSingular = tipo === 'puertas' ? 'Puerta' : 'Ventana';
-
-            const anchoStd = tipo === 'puertas' ? ANCHO_PUERTA_STD : ANCHO_VENTANA_STD;
-
-            const altoStd = tipo === 'puertas' ? ALTO_PUERTA_STD : ALTO_VENTANA_STD;
-
-
-
-            let htmlAberturas = `<h4 class="text-sm font-semibold text-gray-600 mt-2 mb-3">Detalles de ${tipoSingular}s:</h4>`;
-
-            for (let i = 1; i <= numAberturas; i++) {
-
-                htmlAberturas += `
-
-                    <div class="border border-gray-200 p-3 rounded-md mb-3 bg-gray-50">
-
-                        <p class="font-medium text-sm mb-2">${tipoSingular} ${i}</p>
-
-                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 items-end">
-
-                            <div>
-
-                                <label for="tipo_${tipo}_${i}" class="text-xs font-medium text-gray-600">Tipo:</label>
-
-                                <select id="tipo_${tipo}_${i}" name="tipo_${tipo}_${i}" class="input-field select-field bg-white text-sm py-1" onchange="toggleCustomSizeAbertura('${tipo}', ${i})">
-
-                                    <option value="estandar">Estándar (${anchoStd}x${altoStd}m)</option>
-
-                                    <option value="personalizada">Personalizada</option>
-
-                                </select>
-
-                            </div>
-
-                            <div id="custom_size_${tipo}_${i}" class="hidden sm:col-span-2 custom-size-input">
-
-                                <div>
-
-                                    <label for="ancho_${tipo}_${i}" class="text-xs font-medium text-gray-600">Ancho P. (m):</label>
-
-                                    <input type="number" id="ancho_${tipo}_${i}" name="ancho_${tipo}_${i}" step="0.01" min="0.1" class="input-field text-sm py-1" placeholder="Ancho">
-
-                                </div>
-
-                                <div>
-
-                                    <label for="alto_${tipo}_${i}" class="text-xs font-medium text-gray-600">Alto P. (m):</label>
-
-                                    <input type="number" id="alto_${tipo}_${i}" name="alto_${tipo}_${i}" step="0.01" min="0.1" class="input-field text-sm py-1" placeholder="Alto">
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
-                    </div>`;
-
-            }
-
-            detallesDiv.innerHTML = htmlAberturas;
-
-        }
-
-
-
-        function toggleCustomSizeAbertura(tipo, index) {
-
-            const tipoSelect = document.getElementById(`tipo_${tipo}_${index}`);
-
-            const showCustom = tipoSelect?.value === 'personalizada';
-
-            document.getElementById(`custom_size_${tipo}_${index}`)?.classList.toggle('hidden', !showCustom);
-
-        }
-
-
-
-
-
-        function mostrarError(mensaje) {
-
-            mensajeErrorDiv.textContent = `⛔ Error: ${mensaje}`;
-
-            mensajeErrorDiv.classList.remove('hidden');
-
-            mensajeWarningDiv.classList.add('hidden');
-
-            mensajeInfoDiv.classList.add('hidden');
-
-            listaMaterialesDiv.innerHTML = '<p class="text-gray-500 italic">Corrige los errores para ver los resultados.</p>';
-
-            copyBtn.classList.add('hidden'); // Ocultar botón copiar en error
-
-        }
-
-        function mostrarWarning(mensaje) {
-
-            mensajeWarningDiv.textContent = `⚠️ Atención: ${mensaje}`;
-
-            mensajeWarningDiv.classList.remove('hidden');
-
-        }
-
-        function mostrarInfo(mensaje) {
-
-            mensajeInfoDiv.textContent = `ℹ️ Info: ${mensaje}`;
-
-            mensajeInfoDiv.classList.remove('hidden');
-
-        }
-
-        function limpiarMensajes() {
-
-            mensajeErrorDiv.classList.add('hidden');
-
-            mensajeWarningDiv.classList.add('hidden');
-
-            mensajeInfoDiv.classList.add('hidden');
-
-            mensajeErrorDiv.textContent = '';
-
-            mensajeWarningDiv.textContent = '';
-
-            mensajeInfoDiv.textContent = '';
-
-        }
-
-
-
-        function calcularMateriales() {
-
-            limpiarMensajes();
-
-            listaMaterialesDiv.innerHTML = '<p class="text-lime-600 animate-pulse font-semibold">Calculando...</p>';
-
-            copyBtn.classList.add('hidden');
-
-
-
-            // --- 1. OBTENER Y VALIDAR ENTRADAS ---
-
-            const largo = parseFloat(largoInput.value);
-
-            const ancho = parseFloat(anchoInput.value);
-
-            const altoTotal = parseFloat(altoInput.value);
-
-            const calcularMuros = calcularMurosCheckbox.checked;
-
-            const calcularPlafon = calcularPlafonCheckbox.checked;
-
-            const desperdicioUsuario = parseFloat(desperdicioInput.value);
-
-            const factorDesperdicio = (isNaN(desperdicioUsuario) || desperdicioUsuario < 0) ? 0 : desperdicioUsuario / 100;
-
-
-
-            // Validaciones Generales...
-
-             if (isNaN(largo) || isNaN(ancho) || isNaN(altoTotal) || largo <= 0 || ancho <= 0 || altoTotal <= 0) {
-
-                 return mostrarError('Ingresa dimensiones perimetrales y altura total válidas y positivas.');
-
-             }
-
-             if (!calcularMuros && !calcularPlafon) {
-
-                 return mostrarError('Selecciona al menos un tipo de trabajo (Muros o Plafón).');
-
-             }
-
-              if (isNaN(desperdicioUsuario) || desperdicioUsuario < 0) {
-
-                  mostrarWarning('Factor de desperdicio inválido, se usará 0%.');
-
-                  desperdicioInput.value = 0;
-
-              }
-
-
-
-            // --- 2. OBTENER CONFIGURACIONES ESPECÍFICAS ---
-
-            let panelMuroTipo = 'estandar';
-
-            let dobleCapaMuro = false;
-
-            let peraltePosteCm = 6.35;
-
-            let calibrePoste = 26;
-
-            let calibreCanal = 26;
-
-            let espaciamiento = 61;
-
-            let incluirAislamiento = false;
-
-            let numPuertas = 0;
-
-            let numVentanas = 0;
-
-            let aberturasData = [];
-
-            let areaTotalAberturas = 0;
-
-            let metrosLinealesInternos = 0; // <-- Nuevo
-
-
-
-            if (calcularMuros) {
-
-                metrosLinealesInternos = parseFloat(murosInternosMlInput.value) || 0; // <-- Leer nuevo input
-
-                panelMuroTipo = panelMuroSelect.value;
-
-                dobleCapaMuro = dobleCapaMuroCheckbox.checked;
-
-                peraltePosteCm = parseFloat(peraltePosteSelect.value);
-
-                calibrePoste = parseInt(calibrePosteSelect.value);
-
-                calibreCanal = parseInt(calibreCanalSelect.value);
-
-                espaciamiento = parseFloat(espaciamientoSelect.value);
-
-                incluirAislamiento = incluirAislamientoCheckbox.checked;
-
-                numPuertas = parseInt(numPuertasInput.value) || 0;
-
-                numVentanas = parseInt(numVentanasInput.value) || 0;
-
-
-
-                if (metrosLinealesInternos < 0) return mostrarError('Los metros lineales de muros internos no pueden ser negativos.'); // <-- Validar
-
-                if (numPuertas < 0 || numVentanas < 0) return mostrarError('Número de puertas/ventanas no puede ser negativo.');
-
-
-
-                // Recopilar datos de puertas
-
-                for (let i = 1; i <= numPuertas; i++) {
-
-                    const tipo = document.getElementById(`tipo_puertas_${i}`)?.value;
-
-                    let w = ANCHO_PUERTA_STD, h = ALTO_PUERTA_STD;
-
-                    if (tipo === 'personalizada') {
-
-                        w = parseFloat(document.getElementById(`ancho_puertas_${i}`)?.value);
-
-                        h = parseFloat(document.getElementById(`alto_puertas_${i}`)?.value);
-
-                        if (isNaN(w) || isNaN(h) || w <= 0 || h <= 0) return mostrarError(`Dimensiones inválidas para Puerta ${i}.`);
-
-                    } else if (!tipo) return mostrarError(`Tipo no encontrado para Puerta ${i}.`);
-
-                    aberturasData.push({ tipo: 'puerta', ancho: w, alto: h });
-
-                    areaTotalAberturas += w * h;
-
-                }
-
-                 // Recopilar datos de ventanas
-
-                for (let i = 1; i <= numVentanas; i++) {
-
-                    const tipo = document.getElementById(`tipo_ventanas_${i}`)?.value;
-
-                    let w = ANCHO_VENTANA_STD, h = ALTO_VENTANA_STD;
-
-                    if (tipo === 'personalizada') {
-
-                        w = parseFloat(document.getElementById(`ancho_ventanas_${i}`)?.value);
-
-                        h = parseFloat(document.getElementById(`alto_ventanas_${i}`)?.value);
-
-                        if (isNaN(w) || isNaN(h) || w <= 0 || h <= 0) return mostrarError(`Dimensiones inválidas para Ventana ${i}.`);
-
-                    } else if (!tipo) return mostrarError(`Tipo no encontrado para Ventana ${i}.`);
-
-                    aberturasData.push({ tipo: 'ventana', ancho: w, alto: h });
-
-                    areaTotalAberturas += w * h;
-
-                }
-
-            }
-
-
-
-            let panelPlafonTipo = 'estandar';
-
-            let dobleCapaPlafon = false;
-
-            let altoPlafonDeseado = 0;
-
-            let largoColgante = 0;
-
-            let largoTotalColganteConAmarres = 0;
-
-
-
-            if (calcularPlafon) {
-
-                panelPlafonTipo = panelPlafonSelect.value;
-
-                dobleCapaPlafon = dobleCapaPlafonCheckbox.checked;
-
-                altoPlafonDeseado = parseFloat(altoPlafonInput.value);
-
-                 if (isNaN(altoPlafonDeseado) || altoPlafonDeseado <= 0) {
-
-                     return mostrarError('Ingresa una altura válida para el plafón terminado.');
-
-                 }
-
-                 if (altoPlafonDeseado >= altoTotal) {
-
-                     return mostrarError('La altura del plafón debe ser menor que la altura total del espacio.');
-
-                 }
-
-                largoColgante = altoTotal - altoPlafonDeseado;
-
-                largoTotalColganteConAmarres = largoColgante + AMARRE_EXTRA_COLGANTE * 2;
-
-                mostrarInfo(`Largo estimado por colgante de plafón: ${largoTotalColganteConAmarres.toFixed(2)} m (incluye amarres).`);
-
-            }
-
-
-
-            // --- 3. CÁLCULOS GEOMÉTRICOS Y ÁREAS ---
-
-            const perimetro = 2 * (largo + ancho);
-
-            let areaMurosPerimetrales = perimetro * altoTotal; // Área bruta perimetral
-
-            let areaMurosInternos = metrosLinealesInternos * altoTotal; // Área bruta interna (una cara)
-
-
-
-            // Descontar aberturas del área total de muros (perimetrales + internos)
-
-            // Se asume que las aberturas pueden estar en cualquier muro
-
-            let areaTotalMurosBruta = areaMurosPerimetrales + areaMurosInternos;
-
-            let areaTotalMurosNeta = Math.max(0, areaTotalMurosBruta - areaTotalAberturas);
-
-
-
-            // Distribuir el área neta proporcionalmente (aproximación)
-
-            // Esto es para el cálculo de estructura y aislamiento
-
-            let proporcionPerimetral = areaTotalMurosBruta > 0 ? areaMurosPerimetrales / areaTotalMurosBruta : 0;
-
-            let areaNetaMurosPerimetrales = areaTotalMurosNeta * proporcionPerimetral;
-
-            let areaNetaMurosInternos = areaTotalMurosNeta * (1 - proporcionPerimetral);
-
-
-
-            // Área de superficie a cubrir (para paneles, compuesto, cinta, tornillos de panel)
-
-            // Perimetrales: una cara. Internos: dos caras.
-
-            let areaSuperficieACubrir = areaNetaMurosPerimetrales + (areaNetaMurosInternos * 2);
-
-
-
-            const areaPlafon = largo * ancho;
-
-
-
-            // --- 4. CÁLCULO DE MATERIALES ---
-
-            let materiales = {};
-
-            let warnings = [];
-
-
-
-            // --- MUROS (Perimetrales e Internos) ---
-
-            if (calcularMuros) {
-
-                const factorPoste = espaciamiento === 61 ? FACTORES.muro.poste_61 : FACTORES.muro.poste_40_6;
-
-                const esPanelCemento = panelMuroTipo === 'cemento';
-
-                const esPanelRH = panelMuroTipo === 'rh';
-
-                const esCalibreGrueso = calibrePoste > 25 || calibreCanal > 25;
-
-                const factorMultiplicadorCapa = dobleCapaMuro ? 2 : 1; // Aplica a CADA cara
-
-
-
-                // --- Definiciones de Materiales (Muros) ---
-
-                let panelLabel = '';
-
-                let compuestoFactor = dobleCapaMuro ? FACTORES.muro.compuestoStdDoble : FACTORES.muro.compuestoStd;
-
-                let compuestoLabel = 'Compuesto Multiusos (Redimix)';
-
-                let cintaFactor = FACTORES.muro.cintaPapel;
-
-                let cintaLabel = 'Cinta de Papel Refuerzo';
-
-                let cintaUnidadLongitud = LONGITUD_CINTA_PAPEL_ROLLO;
-
-                let tornilloFactor = dobleCapaMuro ? FACTORES.muro.tornilloPanel_Doble_S : FACTORES.muro.tornilloPanel_S;
-
-                let tornilloLabel = `Tornillo Panel Yeso (Tipo S - ${dobleCapaMuro ? '1-5/8" p/ Doble' : '1" o 1-1/8"'})`;
-
-                let tornilloFramerFactor = FACTORES.muro.tornilloFramer_Fino;
-
-                let tornilloFramerLabel = `Tornillo Framer (mini) (Punta Fina 7/16" o 1/2")`;
-
-
-
-                if (esPanelCemento) {
-
-                    panelLabel = `Panel de Cemento 1/2" ${dobleCapaMuro ? '(Doble Capa)' : ''}`;
-
-                    compuestoFactor = dobleCapaMuro ? FACTORES.muro.compuestoBasecoatDoble : FACTORES.muro.compuestoBasecoat;
-
-                    compuestoLabel = 'Compuesto Basecoat (p/ Panel Cemento)';
-
-                    cintaFactor = FACTORES.muro.cintaMalla;
-
-                    cintaLabel = 'Cinta de Malla Fibra Vidrio';
-
-                    cintaUnidadLongitud = LONGITUD_CINTA_MALLA_ROLLO;
-
-                    tornilloFactor = FACTORES.muro.tornilloPanelCemento; // Ya incluye doble capa si aplica
-
-                    tornilloLabel = `Tornillo p/ Panel Cemento (Especial ${dobleCapaMuro ? '1-5/8" o más' : '1-1/4"'})`;
-
-                    warnings.push("Panel Cemento: Usar tornillos especiales (ej. Climacoat) y cinta de malla con Basecoat.");
-
-                    if(dobleCapaMuro) warnings.push("Doble capa de Panel Cemento es poco común, verifica especificaciones.");
-
-                } else if (esPanelRH) {
-
-                    panelLabel = `Panel Yeso RH 1/2" ${dobleCapaMuro ? '(Doble Capa)' : ''}`;
-
-                    warnings.push("Panel RH: Para máxima resistencia a humedad, considera usar compuesto y cinta resistentes a moho.");
-
-                } else { // Estandar
-
-                    panelLabel = `Panel Yeso Estándar 1/2" ${dobleCapaMuro ? '(Doble Capa)' : ''}`;
-
-                }
-
-
-
-                // Ajustar tornillos por calibre grueso
-
-                if (!esPanelCemento && esCalibreGrueso) {
-
-                    tornilloFactor = dobleCapaMuro ? FACTORES.muro.tornilloPanel_Doble_Tek : FACTORES.muro.tornilloPanel_Tek;
-
-                    tornilloLabel = `Tornillo Panel Yeso (Tipo Tek Broca - ${dobleCapaMuro ? '1-5/8"' : '1" o 1-1/8"'} p/ Cal. ${calibrePoste})`;
-
-                    warnings.push(`Calibre ${calibrePoste}/${calibreCanal}: Usar Tornillos Tek Broca para fijar panel.`);
-
-                }
-
-                if (esCalibreGrueso) {
-
-                    tornilloFramerFactor = FACTORES.muro.tornilloFramer_Tek;
-
-                    tornilloFramerLabel = `Tornillo Framer (mini) (Tek Broca 7/16" o 1/2")`;
-
-                     warnings.push(`Unión perfiles Cal. ${calibrePoste}/${calibreCanal}: Usar Tornillo Framer Tek Broca.`);
-
-                }
-
-
-
-                // --- Calcular materiales base muros ---
-
-                // Materiales de superficie (paneles, compuesto, cinta, tornillos panel) - Usan areaSuperficieACubrir
-
-                const panelNetoMuros = areaSuperficieACubrir * FACTORES.muro.panelYeso * factorMultiplicadorCapa; // Factor capa ya está en areaSuperficieACubrir
-
-                const compuestoNetoMuros = areaSuperficieACubrir * compuestoFactor;
-
-                const cintaNetaMuros = areaSuperficieACubrir * cintaFactor;
-
-                const tornilloPanelNetoMuros = areaSuperficieACubrir * tornilloFactor;
-
-
-
-                // Materiales de estructura (postes, canales, tornillos framer, fijadores) - Usan areaTotalMurosNeta
-
-                const postesNeto = areaTotalMurosNeta * factorPoste; // Factor ya da piezas/m²
-
-                const canalesNeto = areaTotalMurosNeta * FACTORES.muro.canalAmarre; // Factor ya da piezas/m²
-
-                const tornilloFramerNeto = areaTotalMurosNeta * tornilloFramerFactor;
-
-                const fijadoresNeto = areaTotalMurosNeta * FACTORES.muro.fijadoresCanal;
-
-
-
-                // --- Agregar materiales a la lista ---
-
-                agregarMaterial(materiales, panelLabel, panelNetoMuros / AREA_HOJA_TABLAROCA, 'hojas', factorDesperdicio, true);
-
-                agregarMaterial(materiales, `Poste Metálico Cal. ${calibrePoste}`, postesNeto, 'piezas', factorDesperdicio, true); // Ya está en piezas
-
-                agregarMaterial(materiales, `Canal de Amarre Cal. ${calibreCanal}`, canalesNeto, 'piezas', factorDesperdicio, true); // Ya está en piezas
-
-                agregarMaterial(materiales, tornilloLabel, tornilloPanelNetoMuros, 'piezas', factorDesperdicio, true);
-
-                if (tornilloFramerNeto > 0) {
-
-                    agregarMaterial(materiales, tornilloFramerLabel, tornilloFramerNeto, 'piezas', factorDesperdicio, true);
-
-                }
-
-                agregarMaterial(materiales, compuestoLabel, compuestoNetoMuros, 'kg', factorDesperdicio, false);
-
-                agregarMaterial(materiales, cintaLabel, cintaNetaMuros / cintaUnidadLongitud, 'rollos', factorDesperdicio, true);
-
-                agregarMaterial(materiales, 'Fijadores para Canal (Clavos/Taquetes)', fijadoresNeto, 'piezas', factorDesperdicio, true);
-
-
-
-                // --- Materiales EXTRA por Aberturas ---
-
-                const numAberturas = numPuertas + numVentanas;
-
-                if (numAberturas > 0) {
-
-                    const postesExtraAberturas = numAberturas * FACTORES.abertura.posteExtra;
-
-                    const canalesExtraAberturas = numAberturas * FACTORES.abertura.canalExtra;
-
-                    // Los tornillos extra se calculan por abertura, no por área descontada
-
-                    const tornilloPanelExtraAberturas = numAberturas * FACTORES.abertura.tornilloPanelExtra * factorMultiplicadorCapa * 2; // *2 porque la abertura tiene 2 lados
-
-                    const tornilloFramerExtraAberturas = numAberturas * FACTORES.abertura.tornilloFramerExtra;
-
-                    const esquinerosAberturas = numAberturas * FACTORES.abertura.esquinero; // Solo jambas verticales
-
-
-
-                    agregarMaterial(materiales, `Poste Metálico Cal. ${calibrePoste}`, postesExtraAberturas, 'piezas', factorDesperdicio, true);
-
-                    agregarMaterial(materiales, `Canal de Amarre Cal. ${calibreCanal}`, canalesExtraAberturas, 'piezas', factorDesperdicio, true);
-
-                    agregarMaterial(materiales, tornilloLabel, tornilloPanelExtraAberturas, 'piezas', factorDesperdicio, true);
-
-                    agregarMaterial(materiales, tornilloFramerLabel, tornilloFramerExtraAberturas, 'piezas', factorDesperdicio, true);
-
-                    agregarMaterial(materiales, 'Esquinero Metálico', esquinerosAberturas, 'piezas', factorDesperdicio, true);
-
-                }
-
-
-
-                // --- Aislamiento ---
-
-                if (incluirAislamiento) {
-
-                    const areaTotalAislamiento = areaTotalMurosNeta; // Aislar toda la cavidad neta
-
-                    const peralteKey = peraltePosteCm.toFixed(2);
-
-                    const areaRollo = AREA_BATT_AISLAMIENTO_MAP[peralteKey] || AREA_BATT_AISLAMIENTO_MAP["6.35"];
-
-                    if (!AREA_BATT_AISLAMIENTO_MAP[peralteKey]) warnings.push(`No se encontró cobertura de aislamiento exacta para peralte ${peraltePosteCm}cm, usando referencia de 6.35cm.`);
-
-                    const aislamientoNeto = areaTotalAislamiento / areaRollo;
-
-                    agregarMaterial(materiales, `Aislamiento (Rollo p/ ${peraltePosteCm}cm)`, aislamientoNeto, 'rollos', factorDesperdicio, true);
-
-                }
-
-            }
-
-
-
-            // --- PLAFÓN ---
-
-            if (calcularPlafon) {
-
-                const numColgantes = Math.ceil(areaPlafon * FACTORES.plafon.numColgantesPorM2);
-
-                const largoTotalAlambre = numColgantes * largoTotalColganteConAmarres;
-
-                const pesoTotalAlambre = largoTotalAlambre * ALAMBRE_KG_POR_METRO_CAL12;
-
-                const factorMultiplicadorCapaPlafon = dobleCapaPlafon ? 2 : 1;
-
-
-
-                let panelPlafonLabel = `Panel Yeso Estándar 1/2" ${dobleCapaPlafon ? '(Doble Capa)' : ''}`;
-
-                let compuestoFactorPlafon = dobleCapaPlafon ? FACTORES.plafon.compuestoStdDoble : FACTORES.plafon.compuestoStd;
-
-                let tornilloFactorPlafon = dobleCapaPlafon ? FACTORES.plafon.tornilloPanel_Doble_S : FACTORES.plafon.tornilloPanel_S;
-
-                let tornilloPlafonLabel = `Tornillo Panel Yeso (Tipo S - ${dobleCapaPlafon ? '1-5/8" p/ Doble' : '1"'})`;
-
-
-
-                if (panelPlafonTipo === 'rh') {
-
-                    panelPlafonLabel = `Panel Yeso RH 1/2" ${dobleCapaPlafon ? '(Doble Capa)' : ''}`;
-
-                    warnings.push("Plafón RH: Considera usar compuesto y cinta resistentes a moho para máxima protección.");
-
-                }
-
-
-
-                const panelNetoPlafon = areaPlafon * FACTORES.plafon.panelYeso * factorMultiplicadorCapaPlafon;
-
-                const canaletaNeta = areaPlafon * FACTORES.plafon.canaletaCarga; // Ya da piezas/m²
-
-                const listonNeto = areaPlafon * FACTORES.plafon.canalListon; // Ya da piezas/m²
-
-                const anguloNeto = perimetro / LONGITUD_PERFIL; // Piezas
-
-                const tornilloPanelNetoPlafon = areaPlafon * tornilloFactorPlafon * factorMultiplicadorCapaPlafon;
-
-                const compuestoNetoPlafon = areaPlafon * compuestoFactorPlafon;
-
-                const cintaNetaPlafon = areaPlafon * FACTORES.plafon.cintaPapel; // Cinta no se duplica
-
-
-
-                agregarMaterial(materiales, panelPlafonLabel, panelNetoPlafon / AREA_HOJA_TABLAROCA, 'hojas', factorDesperdicio, true);
-
-                agregarMaterial(materiales, 'Canaleta de Carga Cal. 22', canaletaNeta, 'piezas', factorDesperdicio, true); // Ya está en piezas
-
-                agregarMaterial(materiales, 'Canal Listón Cal. 26', listonNeto, 'piezas', factorDesperdicio, true); // Ya está en piezas
-
-                agregarMaterial(materiales, 'Ángulo de Amarre Perimetral Cal. 26', anguloNeto, 'piezas', factorDesperdicio, true);
-
-                agregarMaterial(materiales, tornilloPlafonLabel, tornilloPanelNetoPlafon, 'piezas', factorDesperdicio, true);
-
-                // Agregar compuesto y cinta de plafón al total general si también hay muros
-
-                agregarMaterial(materiales, 'Compuesto Multiusos (Redimix)', compuestoNetoPlafon, 'kg', factorDesperdicio, false);
-
-                agregarMaterial(materiales, 'Cinta de Papel Refuerzo', cintaNetaPlafon / LONGITUD_CINTA_PAPEL_ROLLO, 'rollos', factorDesperdicio, true);
-
-                agregarMaterial(materiales, `Alambre Galv. Cal. 12 (~${numColgantes} colg.)`, largoTotalAlambre, 'm', factorDesperdicio, false);
-
-                agregarMaterial(materiales, `Alambre Galv. Cal. 12 (Peso Est.)`, pesoTotalAlambre, 'kg', factorDesperdicio, false);
-
-            }
-
-
-
-            // --- 5. MOSTRAR RESULTADOS Y WARNINGS ---
-
-            if (warnings.length > 0) {
-
-                mostrarWarning(warnings.join(' | '));
-
-            }
-
-            mostrarResultados(materiales, numPuertas, numVentanas, metrosLinealesInternos);
-
-        }
-
-
-
-        function agregarMaterial(lista, nombre, cantidadNeta, unidad, desperdicio, redondearHaciaArriba) {
-
-             if (cantidadNeta <= 0) return;
-
-             const cantidadConDesperdicio = cantidadNeta * (1 + desperdicio);
-
-             let cantidadCalculada;
-
-
-
-             if (redondearHaciaArriba) {
-
-                 cantidadCalculada = Math.ceil(cantidadConDesperdicio);
-
-             } else {
-
-                 // Redondear a 1 decimal para kg y m, 0 para otros
-
-                 const decimales = (unidad === 'kg' || unidad === 'm') ? 1 : 0;
-
-                 cantidadCalculada = parseFloat(cantidadConDesperdicio.toFixed(decimales));
-
-             }
-
-
-
-             // Evitar agregar si la cantidad final es 0
-
-             if (cantidadCalculada <= 0) return;
-
-
-
-             if (lista[nombre]) {
-
-                 lista[nombre].cantidad += cantidadCalculada;
-
-                 // Si ya existía y se vuelve a agregar redondeado, mantener redondeado
-
-                 lista[nombre].redondeado = lista[nombre].redondeado || redondearHaciaArriba;
-
-             } else {
-
-                 lista[nombre] = { cantidad: cantidadCalculada, unidad: unidad, redondeado: redondearHaciaArriba };
-
-             }
-
-
-
-             // Re-redondeo final basado en si ALGUNA vez se pidió redondear
-
-             if (lista[nombre].redondeado) {
-
-                  lista[nombre].cantidad = Math.ceil(lista[nombre].cantidad);
-
-             } else {
-
-                  const decimales = (lista[nombre].unidad === 'kg' || lista[nombre].unidad === 'm') ? 1 : 0;
-
-                  lista[nombre].cantidad = parseFloat(lista[nombre].cantidad.toFixed(decimales));
-
-             }
-
-             // Asegurarse de no tener cantidades 0 finales después de sumar y redondear
-
-              if (lista[nombre].cantidad <= 0) delete lista[nombre];
-
-        }
-
-
-
-        function mostrarResultados(materiales, puertasConsideradas, ventanasConsideradas, mlInternosConsiderados) {
-
-           if (Object.keys(materiales).length === 0) {
-
-               if (mensajeErrorDiv.classList.contains('hidden')) {
-
-                   listaMaterialesDiv.innerHTML = '<p class="text-gray-500 italic">No se calcularon materiales. Revisa las selecciones y dimensiones.</p>';
-
-               }
-
-                copyBtn.classList.add('hidden');
-
-               return;
-
-           }
-
-
-
-           const materialesOrdenados = Object.keys(materiales).sort((a, b) => a.localeCompare(b));
-
-           let htmlResultados = '<ul class="list-none space-y-3">';
-
-           materialesOrdenados.forEach(nombre => {
-
-               const item = materiales[nombre];
-
-               const cantidadFormateada = item.cantidad.toLocaleString('es-MX', {
-
-                   minimumFractionDigits: (item.unidad === 'kg' || item.unidad === 'm') && item.cantidad % 1 !== 0 ? 1 : 0,
-
-                   maximumFractionDigits: (item.unidad === 'kg' || item.unidad === 'm') ? 1 : 0
-
-               });
-
-               htmlResultados += `<li class="result-item flex justify-between items-center">
-
-                                     <span class="font-medium text-gray-700">${nombre}:</span>
-
-                                     <span class="text-lime-700 font-semibold text-lg">${cantidadFormateada} ${item.unidad}</span>
-
-                                  </li>`;
-
-           });
-
-           htmlResultados += '</ul>';
-
-
-
-           let notas = [];
-
-           if (mlInternosConsiderados > 0) notas.push(`${mlInternosConsiderados.toFixed(2)} ml de muros internos`);
-
-           if (puertasConsideradas > 0) notas.push(`${puertasConsideradas} puerta(s)`);
-
-           if (ventanasConsideradas > 0) notas.push(`${ventanasConsideradas} ventana(s)`);
-
-
-
-           if (notas.length > 0) {
-
-                let textoNotas = "* Cálculo considera";
-
-                if (mlInternosConsiderados > 0) textoNotas += ` ${mlInternosConsiderados.toFixed(2)} ml de muros internos (ambas caras)`;
-
-                if (puertasConsideradas > 0 || ventanasConsideradas > 0) {
-
-                    textoNotas += (mlInternosConsiderados > 0 ? ", incluye" : " incluye") + " materiales adicionales para";
-
-                    if (puertasConsideradas > 0) textoNotas += ` ${puertasConsideradas} puerta(s)`;
-
-                    if (ventanasConsideradas > 0) textoNotas += `${puertasConsideradas > 0 ? ' y' : ''} ${ventanasConsideradas} ventana(s)`;
-
-                    textoNotas += " y descuenta su área del panel.";
-
-                } else if (mlInternosConsiderados > 0) {
-
-                     textoNotas += ".";
-
-                }
-
-                 htmlResultados += `<p class="text-xs text-gray-600 mt-5">${textoNotas}</p>`;
-
-           }
-
-
-
-
-
-           listaMaterialesDiv.innerHTML = htmlResultados;
-
-           copyBtn.classList.remove('hidden'); // Mostrar botón copiar
-
-        }
-
-
-
-        function copiarResultados() {
-
-           const lista = document.getElementById('lista-materiales');
-
-           if (!lista) return;
-
-
-
-           let textoACopiar = "Lista de Materiales Estimados (Calculadora TITÁN v4.2):\n=======================================================\n";
-
-           const items = lista.querySelectorAll('li');
-
-
-
-           items.forEach(item => {
-
-               const nombre = item.querySelector('span:first-child')?.textContent || '';
-
-               const cantidadUnidad = item.querySelector('span:last-child')?.textContent || '';
-
-               if (nombre && cantidadUnidad) {
-
-                   textoACopiar += `${nombre.replace(':', '').trim()}: ${cantidadUnidad}\n`;
-
-               }
-
-           });
-
-
-
-           // Añadir notas, warnings e info si existen
-
-           const notasP = lista.querySelector('p.text-xs');
-
-           if (notasP) {
-
-               textoACopiar += "\nNotas:\n" + notasP.textContent + "\n";
-
-           }
-
-           if (!mensajeWarningDiv.classList.contains('hidden')) {
-
-               textoACopiar += "\nAdvertencias:\n" + mensajeWarningDiv.textContent.replace('⚠️ Atención: ', '- ') + "\n";
-
-           }
-
-            if (!mensajeInfoDiv.classList.contains('hidden')) {
-
-               textoACopiar += "\nInformación Adicional:\n" + mensajeInfoDiv.textContent.replace('ℹ️ Info: ', '- ') + "\n";
-
-           }
-
-            textoACopiar += "\n=======================================================\n";
-
-            textoACopiar += "Estimación basada en factores estándar. Verificar con fichas técnicas y profesionales.";
-
-
-
-
-
-           navigator.clipboard.writeText(textoACopiar)
-
-               .then(() => {
-
-                   // Éxito al copiar
-
-                   copyBtn.textContent = '¡Copiado!';
-
-                   copyBtn.classList.add('bg-green-500', 'text-white');
-
-                   copyBtn.classList.remove('bg-yellow-500', 'text-yellow-900');
-
-                   setTimeout(() => {
-
-                        copyBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline-block mr-1 -mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"> <path stroke-linecap="round" stroke-linejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" /> </svg> Copiar Lista`;
-
-                        copyBtn.classList.remove('bg-green-500', 'text-white');
-
-                        copyBtn.classList.add('bg-yellow-500', 'text-yellow-900');
-
-                   }, 1500);
-
-               })
-
-               .catch(err => {
-
-                   console.error('Error al copiar: ', err);
-
-                   alert('Error al copiar la lista. Intenta manualmente.');
-
-               });
-
-        }
-
-    // --- Registrar Service Worker (Añadir esto al final de tu script) ---
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/service-worker.js') // Asegúrate que la ruta sea correcta
-      .then(registration => {
-        console.log('ServiceWorker registrado con éxito:', registration.scope);
-      })
-      .catch(error => {
-        console.log('Error al registrar ServiceWorker:', error);
-      });
-  });
-}
-
-    </script>
-
-
-
-    </body>
-
+    <div class="container mx-auto p-4 md:p-8 max-w-5xl">
+        <header class="mb-10 text-center">
+            <h1 class="text-4xl md:text-5xl font-bold text-lime-700">Calculadora TITÁN Tablaroca</h1>
+            <p class="text-gray-600 mt-3 text-lg">La estimación más completa para tus proyectos PRO.</p>
+        </header>
+
+        <main class="bg-white p-6 md:p-8 rounded-xl shadow-2xl space-y-10">
+
+            <div>
+                <h2 class="section-header">1. Dimensiones Generales</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                    <div>
+                        <label for="largo" class="text-sm text-gray-700">Largo Perimetral (m):</label>
+                        <input type="number" id="largo" name="largo" step="0.01" min="0.1" required class="input-field" placeholder="Ej: 5.5">
+                    </div>
+                    <div>
+                        <label for="ancho" class="text-sm text-gray-700">Ancho Perimetral (m):</label>
+                        <input type="number" id="ancho" name="ancho" step="0.01" min="0.1" required class="input-field" placeholder="Ej: 3.0">
+                    </div>
+                    <div>
+                        <label for="alto" class="text-sm text-gray-700">Alto Total (m):</label>
+                        <input type="number" id="alto" name="alto" step="0.01" min="0.1" required class="input-field" placeholder="Ej: 2.80">
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <h2 class="section-header">2. Configuración del Trabajo</h2>
+                <div class="mb-6">
+                   <span class="block text-sm font-medium text-gray-700 mb-2">Elementos a Calcular:</span>
+                   <div class="flex items-center space-x-6">
+                       <div class="flex items-center">
+                           <input type="checkbox" id="calcular_muros" name="tipo_trabajo" value="muros" class="h-4 w-4 text-lime-600 border-gray-400 rounded focus:ring-lime-500 cursor-pointer">
+                           <label for="calcular_muros" class="ml-2 block text-sm text-gray-900 cursor-pointer">Muros Divisorios</label>
+                       </div>
+                       <div class="flex items-center">
+                           <input type="checkbox" id="calcular_plafon" name="tipo_trabajo" value="plafon" class="h-4 w-4 text-lime-600 border-gray-400 rounded focus:ring-lime-500 cursor-pointer">
+                           <label for="calcular_plafon" class="ml-2 block text-sm text-gray-900 cursor-pointer">Plafón Corrido</label>
+                       </div>
+                   </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-10 gap-y-8">
+                    <div id="opciones_muros" class="space-y-5 hidden bg-lime-50 p-4 rounded-lg border border-lime-200">
+                        <h3 class="font-semibold text-lg text-lime-800 border-b border-lime-300 pb-2 mb-4">Opciones de Muros</h3>
+                        <div>
+                            <label for="muros_internos_ml" class="text-sm text-gray-700">Metros Lineales Muros Internos (m):</label>
+                            <input type="number" id="muros_internos_ml" name="muros_internos_ml" step="0.01" min="0" value="0" class="input-field" placeholder="Ej: 12.5">
+                            <p class="text-xs text-gray-500 mt-1">Suma de la longitud de todos los muros internos.</p>
+                        </div>
+                        <div>
+                            <label for="panel_muro" class="text-sm text-gray-700">Tipo de Panel:</label>
+                            <select id="panel_muro" name="panel_muro" class="input-field select-field bg-white">
+                                <option value="estandar">Estándar / Ligero (1/2")</option>
+                                <option value="rh">Resistente Humedad (RH 1/2")</option>
+                                <option value="cemento">Panel de Cemento (1/2")</option>
+                            </select>
+                        </div>
+                         <div>
+                            <label for="doble_capa_muro" class="text-sm text-gray-700">Capas de Panel:</label>
+                            <div class="flex items-center">
+                                <input type="checkbox" id="doble_capa_muro" name="doble_capa_muro" class="h-4 w-4 text-lime-600 border-gray-400 rounded focus:ring-lime-500 cursor-pointer">
+                                <label for="doble_capa_muro" class="ml-2 block text-sm text-gray-900 cursor-pointer">Doble Capa (ambos lados)</label>
+                                <span class="tooltip-icon" title="Usar doble capa mejora aislamiento acústico y resistencia al fuego. Requiere tornillos más largos. Se aplica a ambos lados de muros internos y perimetrales.">?</span>
+                            </div>
+                        </div>
+                         <div>
+                            <label for="peralte_poste" class="text-sm text-gray-700">Peralte Poste (Ancho Muro):</label>
+                            <select id="peralte_poste" name="peralte_poste" class="input-field select-field bg-white">
+                                <option value="6.35">6.35 cm (2 1/2")</option>
+                                <option value="9.20">9.20 cm (3 5/8")</option>
+                                <option value="4.10">4.10 cm (1 5/8")</option>
+                                <option value="15.24">15.24 cm (6")</option>
+                            </select>
+                             <p class="text-xs text-gray-500 mt-1">Importante para cálculo de aislamiento.</p>
+                        </div>
+                         <div>
+                            <label for="calibre_poste" class="text-sm text-gray-700">Calibre Postes:</label>
+                            <select id="calibre_poste" name="calibre_poste" class="input-field select-field bg-white">
+                                <option value="26">Cal. 26 (Ligero)</option>
+                                <option value="22">Cal. 22 (Semi-Estruc.)</option>
+                                <option value="20">Cal. 20 (Estructural)</option>
+                            </select>
+                        </div>
+                         <div>
+                            <label for="calibre_canal" class="text-sm text-gray-700">Calibre Canales:</label>
+                            <select id="calibre_canal" name="calibre_canal" class="input-field select-field bg-white">
+                                <option value="26">Cal. 26 (Ligero)</option>
+                                <option value="22">Cal. 22 (Semi-Estruc.)</option>
+                                <option value="20">Cal. 20 (Estructural)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="espaciamiento" class="text-sm text-gray-700">Espaciamiento Postes:</label>
+                            <select id="espaciamiento" name="espaciamiento" class="input-field select-field bg-white">
+                                <option value="61">61 cm (Estándar)</option>
+                                <option value="40.6">40.6 cm (Rígido)</option>
+                            </select>
+                        </div>
+                         <div>
+                             <label for="incluir_aislamiento" class="text-sm text-gray-700">Aislamiento:</label>
+                             <div class="flex items-center">
+                                 <input type="checkbox" id="incluir_aislamiento" name="incluir_aislamiento" class="h-4 w-4 text-lime-600 border-gray-400 rounded focus:ring-lime-500 cursor-pointer">
+                                 <label for="incluir_aislamiento" class="ml-2 block text-sm text-gray-900 cursor-pointer">Incluir Aislamiento Térmico/Acústico</label>
+                                 <span class="tooltip-icon" title="Calcula rollos de aislamiento según el peralte del poste seleccionado para el área total de muros (perimetrales e internos).">?</span>
+                             </div>
+                         </div>
+                    </div>
+
+                    <div id="opciones_plafon" class="space-y-5 hidden bg-sky-50 p-4 rounded-lg border border-sky-200">
+                         <h3 class="font-semibold text-lg text-sky-800 border-b border-sky-300 pb-2 mb-4">Opciones de Plafón</h3>
+                         <div>
+                            <label for="panel_plafon" class="text-sm text-gray-700">Tipo de Panel:</label>
+                            <select id="panel_plafon" name="panel_plafon" class="input-field select-field bg-white">
+                                <option value="estandar">Estándar / Ligero (1/2")</option>
+                                <option value="rh">Resistente Humedad (RH 1/2")</option>
+                            </select>
+                        </div>
+                         <div>
+                            <label for="doble_capa_plafon" class="text-sm text-gray-700">Capas de Panel:</label>
+                            <div class="flex items-center">
+                                <input type="checkbox" id="doble_capa_plafon" name="doble_capa_plafon" class="h-4 w-4 text-lime-600 border-gray-400 rounded focus:ring-lime-500 cursor-pointer">
+                                <label for="doble_capa_plafon" class="ml-2 block text-sm text-gray-900 cursor-pointer">Doble Capa</label>
+                                <span class="tooltip-icon" title="Mejora rigidez y acústica del plafón. Requiere tornillos más largos.">?</span>
+                            </div>
+                        </div>
+                        <div>
+                            <label for="alto_plafon" class="text-sm text-gray-700">Altura Plafón Terminado (m):</label>
+                            <input type="number" id="alto_plafon" name="alto_plafon" step="0.01" min="0.1" class="input-field" placeholder="Ej: 2.50">
+                            <p class="text-xs text-gray-500 mt-1">Distancia del piso al plafón terminado.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+             <div id="seccion_aberturas" class="hidden">
+                <h2 class="section-header">3. Aberturas en Muros (Perimetrales e Internos)</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
+                    <div>
+                        <label for="num_puertas" class="text-sm font-medium text-gray-700">Número de Puertas:</label>
+                        <input type="number" id="num_puertas" name="num_puertas" value="0" step="1" min="0" class="input-field sm:w-1/2" placeholder="0">
+                        <div id="detalles_puertas" class="mt-4 space-y-4"></div>
+                    </div>
+                    <div>
+                        <label for="num_ventanas" class="text-sm font-medium text-gray-700">Número de Ventanas:</label>
+                        <input type="number" id="num_ventanas" name="num_ventanas" value="0" step="1" min="0" class="input-field sm:w-1/2" placeholder="0">
+                        <div id="detalles_ventanas" class="mt-4 space-y-4"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                 <h2 class="section-header">4. Ajustes Finales</h2>
+                <label for="desperdicio" class="text-sm text-gray-700">Factor de Desperdicio (%):</label>
+                <input type="number" id="desperdicio" name="desperdicio" value="10" step="1" min="0" max="50" class="input-field sm:w-1/3" placeholder="Ej: 10">
+                 <p class="text-xs text-gray-500 mt-1">Recomendado: 5-10%. Aumentar si hay muchos cortes/complejidad.</p>
+            </div>
+
+            <div class="text-center pt-8">
+                <button id="calcularBtn" class="calc-button">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 inline-block mr-2 -mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                    </svg>
+                    Calcular Materiales
+                </button>
+            </div>
+
+            <div id="resultados" class="mt-12 border-t-2 pt-8 border-lime-300">
+                <div class="flex justify-between items-center mb-5">
+                   <h2 class="text-2xl font-semibold text-gray-800">Resultados Estimados</h2>
+                   <button id="copyBtn" class="copy-button hidden">
+                       <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline-block mr-1 -mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                         <path stroke-linecap="round" stroke-linejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                       </svg>
+                       Copiar Lista
+                   </button>
+                </div>
+                 <div id="mensaje-error" class="hidden"></div>
+                 <div id="mensaje-warning" class="hidden"></div>
+                 <div id="mensaje-info" class="hidden"></div>
+                 <div id="lista-materiales" class="text-gray-800 space-y-3">
+                    <p class="text-gray-500 italic">Ingresa datos y haz clic en calcular.</p>
+                </div>
+            </div>
+        </main>
+
+        <footer class="text-center text-gray-500 text-sm mt-12">
+            <p>Calculadora v4.2 - TITÁN.</p>
+            <p>⚠️ Estimación basada en factores estándar. Consulta fichas técnicas, normativas y a profesionales.</p>
+        </footer>
+    </div>
+
+    <script>
+        // --- CONSTANTES Y VALORES BASE v4.2 ---
+        const AREA_HOJA_TABLAROCA = 1.22 * 2.44; // m²
+        const LONGITUD_PERFIL = 3.05; // m
+        const LONGITUD_CINTA_PAPEL_ROLLO = 75; // m
+        const LONGITUD_CINTA_MALLA_ROLLO = 45; // m
+        const LONGITUD_ESQUINERO = 3.05; // m
+        const ALAMBRE_KG_POR_METRO_CAL12 = 0.055; // kg/m
+        const AMARRE_EXTRA_COLGANTE = 0.15; // m por lado
+        const ANCHO_PUERTA_STD = 0.90; // m
+        const ALTO_PUERTA_STD = 2.10; // m
+        const ANCHO_VENTANA_STD = 1.20; // m (Ejemplo)
+        const ALTO_VENTANA_STD = 1.00; // m (Ejemplo)
+        const AREA_BATT_AISLAMIENTO_MAP = { // m² por rollo según espesor (aproximado)
+            "4.10": 14.86, // 1.5" R6? Muy raro, usar referencia 2.5"
+            "6.35": 7.43,  // 2.5" R8
+            "9.20": 7.43,  // 3.5" R11 (misma cobertura, más grueso)
+            "15.24": 5.57  // 6" R19 (menos cobertura por rollo)
+        };
+
+        // Factores de rendimiento v4.2
+        const FACTORES = {
+            muro: {
+                // Por m² de superficie de muro (considerando AMBAS caras para internos)
+                panelYeso: 1.05, // Factor por m² de CADA CARA cubierta
+                compuestoStd: 0.90, // Factor por m² de CADA CARA cubierta
+                compuestoStdDoble: 1.2, // Factor por m² de CADA CARA cubierta
+                compuestoBasecoat: 1.2, // Factor por m² de CADA CARA cubierta
+                compuestoBasecoatDoble: 1.6, // Factor por m² de CADA CARA cubierta
+                cintaPapel: 1.10, // Factor por m² de CADA CARA cubierta
+                cintaMalla: 1.15, // Factor por m² de CADA CARA cubierta
+                tornilloPanel_S: 15, // Factor por m² de CADA CARA cubierta
+                tornilloPanel_Tek: 15, // Factor por m² de CADA CARA cubierta
+                tornilloPanelCemento: 18, // Factor por m² de CADA CARA cubierta
+                tornilloPanel_Doble_S: 18, // Factor por m² de CADA CARA cubierta
+                tornilloPanel_Doble_Tek: 18, // Factor por m² de CADA CARA cubierta
+
+                // Por m² de área de muro (estructura interna)
+                poste_61: 0.90 / LONGITUD_PERFIL, // Postes por m² de muro
+                poste_40_6: 1.25 / LONGITUD_PERFIL, // Postes por m² de muro
+                canalAmarre: 0.70 / LONGITUD_PERFIL, // Canales (sup+inf) por m² de muro (0.35 * 2 / L) -> Ajustado para m² de muro
+                tornilloFramer_Fino: 2.5, // Tornillos por m² de muro (estructura)
+                tornilloFramer_Tek: 2.5, // Tornillos por m² de muro (estructura)
+                fijadoresCanal: 1.6 // Fijadores (piso+techo) por m² de muro (0.8 * 2) -> Ajustado para m² de muro
+            },
+            plafon: {
+                // Por m² de área de plafón
+                panelYeso: 1.05,
+                canaletaCarga: 1.30 / LONGITUD_PERFIL, // Piezas por m²
+                canalListon: 2.00 / LONGITUD_PERFIL, // Piezas por m²
+                tornilloPanel_S: 16,
+                tornilloPanel_Doble_S: 20,
+                compuestoStd: 0.90,
+                compuestoStdDoble: 1.2,
+                cintaPapel: 1.10,
+                numColgantesPorM2: 1 / (1.22 * 1.22) // Aprox. 1 colgante por 1.5 m²
+            },
+            abertura: {
+                // Por cada abertura (puerta/ventana)
+                posteExtra: 2, // piezas
+                canalExtra: 1, // piezas (para dintel/antepecho)
+                tornilloPanelExtra: 30, // piezas (para fijar panel alrededor)
+                tornilloFramerExtra: 10, // piezas (para armar marco)
+                esquinero: 2 // piezas (jambas verticales)
+            }
+        };
+
+        // --- ELEMENTOS DEL DOM v4.2 ---
+        const largoInput = document.getElementById('largo');
+        const anchoInput = document.getElementById('ancho');
+        const altoInput = document.getElementById('alto');
+        const altoPlafonInput = document.getElementById('alto_plafon');
+        const murosInternosMlInput = document.getElementById('muros_internos_ml'); // <-- Nuevo
+        const panelMuroSelect = document.getElementById('panel_muro');
+        const panelPlafonSelect = document.getElementById('panel_plafon');
+        const dobleCapaMuroCheckbox = document.getElementById('doble_capa_muro');
+        const dobleCapaPlafonCheckbox = document.getElementById('doble_capa_plafon');
+        const peraltePosteSelect = document.getElementById('peralte_poste');
+        const calibrePosteSelect = document.getElementById('calibre_poste');
+        const calibreCanalSelect = document.getElementById('calibre_canal');
+        const espaciamientoSelect = document.getElementById('espaciamiento');
+        const incluirAislamientoCheckbox = document.getElementById('incluir_aislamiento');
+        const numPuertasInput = document.getElementById('num_puertas');
+        const detallesPuertasDiv = document.getElementById('detalles_puertas');
+        const numVentanasInput = document.getElementById('num_ventanas');
+        const detallesVentanasDiv = document.getElementById('detalles_ventanas');
+        const calcularMurosCheckbox = document.getElementById('calcular_muros');
+        const calcularPlafonCheckbox = document.getElementById('calcular_plafon');
+        const desperdicioInput = document.getElementById('desperdicio');
+        const calcularBtn = document.getElementById('calcularBtn');
+        const copyBtn = document.getElementById('copyBtn');
+        const listaMaterialesDiv = document.getElementById('lista-materiales');
+        const mensajeErrorDiv = document.getElementById('mensaje-error');
+        const mensajeWarningDiv = document.getElementById('mensaje-warning');
+        const mensajeInfoDiv = document.getElementById('mensaje-info');
+        const opcionesMurosDiv = document.getElementById('opciones_muros');
+        const opcionesPlafonDiv = document.getElementById('opciones_plafon');
+        const seccionAberturasDiv = document.getElementById('seccion_aberturas');
+
+
+        // --- EVENT LISTENERS v4.2 ---
+        calcularBtn.addEventListener('click', calcularMateriales);
+        copyBtn.addEventListener('click', copiarResultados);
+        calcularMurosCheckbox.addEventListener('change', toggleMurosOptions);
+        calcularPlafonCheckbox.addEventListener('change', togglePlafonOptions);
+        numPuertasInput.addEventListener('input', () => generarInputsAberturas('puertas'));
+        numVentanasInput.addEventListener('input', () => generarInputsAberturas('ventanas'));
+
+        // --- INICIALIZACIÓN v4.2 ---
+        toggleMurosOptions();
+        togglePlafonOptions();
+
+        // --- FUNCIONES v4.2 ---
+
+        function toggleMurosOptions() {
+            const show = calcularMurosCheckbox.checked;
+            opcionesMurosDiv.classList.toggle('hidden', !show);
+            seccionAberturasDiv.classList.toggle('hidden', !show); // Mostrar sección si muros está activo
+            if (show) {
+                generarInputsAberturas('puertas');
+                generarInputsAberturas('ventanas');
+            } else {
+                detallesPuertasDiv.innerHTML = '';
+                detallesVentanasDiv.innerHTML = '';
+                numPuertasInput.value = 0;
+                numVentanasInput.value = 0;
+                murosInternosMlInput.value = 0; // Limpiar metros internos si se desactiva muros
+            }
+        }
+        function togglePlafonOptions() {
+            const show = calcularPlafonCheckbox.checked;
+            opcionesPlafonDiv.classList.toggle('hidden', !show);
+             // No ocultar sección aberturas si muros sigue activo
+             if (!show && !calcularMurosCheckbox.checked) {
+                 seccionAberturasDiv.classList.add('hidden');
+             }
+        }
+
+        function generarInputsAberturas(tipo) {
+            const numInput = document.getElementById(`num_${tipo}`);
+            const detallesDiv = document.getElementById(`detalles_${tipo}`);
+            const numAberturas = parseInt(numInput?.value) || 0;
+
+            if (!numInput || !detallesDiv) return;
+
+            detallesDiv.innerHTML = '';
+            if (numAberturas <= 0) return;
+
+            const tipoSingular = tipo === 'puertas' ? 'Puerta' : 'Ventana';
+            const anchoStd = tipo === 'puertas' ? ANCHO_PUERTA_STD : ANCHO_VENTANA_STD;
+            const altoStd = tipo === 'puertas' ? ALTO_PUERTA_STD : ALTO_VENTANA_STD;
+
+            let htmlAberturas = `<h4 class="text-sm font-semibold text-gray-600 mt-2 mb-3">Detalles de ${tipoSingular}s:</h4>`;
+            for (let i = 1; i <= numAberturas; i++) {
+                htmlAberturas += `
+                    <div class="border border-gray-200 p-3 rounded-md mb-3 bg-gray-50">
+                        <p class="font-medium text-sm mb-2">${tipoSingular} ${i}</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 items-end">
+                            <div>
+                                <label for="tipo_${tipo}_${i}" class="text-xs font-medium text-gray-600">Tipo:</label>
+                                <select id="tipo_${tipo}_${i}" name="tipo_${tipo}_${i}" class="input-field select-field bg-white text-sm py-1" onchange="toggleCustomSizeAbertura('${tipo}', ${i})">
+                                    <option value="estandar">Estándar (${anchoStd}x${altoStd}m)</option>
+                                    <option value="personalizada">Personalizada</option>
+                                </select>
+                            </div>
+                            <div id="custom_size_${tipo}_${i}" class="hidden sm:col-span-2 custom-size-input">
+                                <div>
+                                    <label for="ancho_${tipo}_${i}" class="text-xs font-medium text-gray-600">Ancho P. (m):</label>
+                                    <input type="number" id="ancho_${tipo}_${i}" name="ancho_${tipo}_${i}" step="0.01" min="0.1" class="input-field text-sm py-1" placeholder="Ancho">
+                                </div>
+                                <div>
+                                    <label for="alto_${tipo}_${i}" class="text-xs font-medium text-gray-600">Alto P. (m):</label>
+                                    <input type="number" id="alto_${tipo}_${i}" name="alto_${tipo}_${i}" step="0.01" min="0.1" class="input-field text-sm py-1" placeholder="Alto">
+                                </div>
+                            </div>
+                        </div>
+                    </div>`;
+            }
+            detallesDiv.innerHTML = htmlAberturas;
+        }
+
+        function toggleCustomSizeAbertura(tipo, index) {
+            const tipoSelect = document.getElementById(`tipo_${tipo}_${index}`);
+            const showCustom = tipoSelect?.value === 'personalizada';
+            document.getElementById(`custom_size_${tipo}_${index}`)?.classList.toggle('hidden', !showCustom);
+        }
+
+
+        function mostrarError(mensaje) {
+            mensajeErrorDiv.textContent = `⛔ Error: ${mensaje}`;
+            mensajeErrorDiv.classList.remove('hidden');
+            mensajeWarningDiv.classList.add('hidden');
+            mensajeInfoDiv.classList.add('hidden');
+            listaMaterialesDiv.innerHTML = '<p class="text-gray-500 italic">Corrige los errores para ver los resultados.</p>';
+            copyBtn.classList.add('hidden'); // Ocultar botón copiar en error
+        }
+        function mostrarWarning(mensaje) {
+            mensajeWarningDiv.textContent = `⚠️ Atención: ${mensaje}`;
+            mensajeWarningDiv.classList.remove('hidden');
+        }
+        function mostrarInfo(mensaje) {
+            mensajeInfoDiv.textContent = `ℹ️ Info: ${mensaje}`;
+            mensajeInfoDiv.classList.remove('hidden');
+        }
+        function limpiarMensajes() {
+            mensajeErrorDiv.classList.add('hidden');
+            mensajeWarningDiv.classList.add('hidden');
+            mensajeInfoDiv.classList.add('hidden');
+            mensajeErrorDiv.textContent = '';
+            mensajeWarningDiv.textContent = '';
+            mensajeInfoDiv.textContent = '';
+        }
+
+        function calcularMateriales() {
+            limpiarMensajes();
+            listaMaterialesDiv.innerHTML = '<p class="text-lime-600 animate-pulse font-semibold">Calculando...</p>';
+            copyBtn.classList.add('hidden');
+
+            // --- 1. OBTENER Y VALIDAR ENTRADAS ---
+            const largo = parseFloat(largoInput.value);
+            const ancho = parseFloat(anchoInput.value);
+            const altoTotal = parseFloat(altoInput.value);
+            const calcularMuros = calcularMurosCheckbox.checked;
+            const calcularPlafon = calcularPlafonCheckbox.checked;
+            const desperdicioUsuario = parseFloat(desperdicioInput.value);
+            const factorDesperdicio = (isNaN(desperdicioUsuario) || desperdicioUsuario < 0) ? 0 : desperdicioUsuario / 100;
+
+            // Validaciones Generales...
+             if (isNaN(largo) || isNaN(ancho) || isNaN(altoTotal) || largo <= 0 || ancho <= 0 || altoTotal <= 0) {
+                 return mostrarError('Ingresa dimensiones perimetrales y altura total válidas y positivas.');
+             }
+             if (!calcularMuros && !calcularPlafon) {
+                 return mostrarError('Selecciona al menos un tipo de trabajo (Muros o Plafón).');
+             }
+              if (isNaN(desperdicioUsuario) || desperdicioUsuario < 0) {
+                  mostrarWarning('Factor de desperdicio inválido, se usará 0%.');
+                  desperdicioInput.value = 0;
+              }
+
+            // --- 2. OBTENER CONFIGURACIONES ESPECÍFICAS ---
+            let panelMuroTipo = 'estandar';
+            let dobleCapaMuro = false;
+            let peraltePosteCm = 6.35;
+            let calibrePoste = 26;
+            let calibreCanal = 26;
+            let espaciamiento = 61;
+            let incluirAislamiento = false;
+            let numPuertas = 0;
+            let numVentanas = 0;
+            let aberturasData = [];
+            let areaTotalAberturas = 0;
+            let metrosLinealesInternos = 0; // <-- Nuevo
+
+            if (calcularMuros) {
+                metrosLinealesInternos = parseFloat(murosInternosMlInput.value) || 0; // <-- Leer nuevo input
+                panelMuroTipo = panelMuroSelect.value;
+                dobleCapaMuro = dobleCapaMuroCheckbox.checked;
+                peraltePosteCm = parseFloat(peraltePosteSelect.value);
+                calibrePoste = parseInt(calibrePosteSelect.value);
+                calibreCanal = parseInt(calibreCanalSelect.value);
+                espaciamiento = parseFloat(espaciamientoSelect.value);
+                incluirAislamiento = incluirAislamientoCheckbox.checked;
+                numPuertas = parseInt(numPuertasInput.value) || 0;
+                numVentanas = parseInt(numVentanasInput.value) || 0;
+
+                if (metrosLinealesInternos < 0) return mostrarError('Los metros lineales de muros internos no pueden ser negativos.'); // <-- Validar
+                if (numPuertas < 0 || numVentanas < 0) return mostrarError('Número de puertas/ventanas no puede ser negativo.');
+
+                // Recopilar datos de puertas
+                for (let i = 1; i <= numPuertas; i++) {
+                    const tipo = document.getElementById(`tipo_puertas_${i}`)?.value;
+                    let w = ANCHO_PUERTA_STD, h = ALTO_PUERTA_STD;
+                    if (tipo === 'personalizada') {
+                        w = parseFloat(document.getElementById(`ancho_puertas_${i}`)?.value);
+                        h = parseFloat(document.getElementById(`alto_puertas_${i}`)?.value);
+                        if (isNaN(w) || isNaN(h) || w <= 0 || h <= 0) return mostrarError(`Dimensiones inválidas para Puerta ${i}.`);
+                    } else if (!tipo) return mostrarError(`Tipo no encontrado para Puerta ${i}.`);
+                    aberturasData.push({ tipo: 'puerta', ancho: w, alto: h });
+                    areaTotalAberturas += w * h;
+                }
+                 // Recopilar datos de ventanas
+                for (let i = 1; i <= numVentanas; i++) {
+                    const tipo = document.getElementById(`tipo_ventanas_${i}`)?.value;
+                    let w = ANCHO_VENTANA_STD, h = ALTO_VENTANA_STD;
+                    if (tipo === 'personalizada') {
+                        w = parseFloat(document.getElementById(`ancho_ventanas_${i}`)?.value);
+                        h = parseFloat(document.getElementById(`alto_ventanas_${i}`)?.value);
+                        if (isNaN(w) || isNaN(h) || w <= 0 || h <= 0) return mostrarError(`Dimensiones inválidas para Ventana ${i}.`);
+                    } else if (!tipo) return mostrarError(`Tipo no encontrado para Ventana ${i}.`);
+                    aberturasData.push({ tipo: 'ventana', ancho: w, alto: h });
+                    areaTotalAberturas += w * h;
+                }
+            }
+
+            let panelPlafonTipo = 'estandar';
+            let dobleCapaPlafon = false;
+            let altoPlafonDeseado = 0;
+            let largoColgante = 0;
+            let largoTotalColganteConAmarres = 0;
+
+            if (calcularPlafon) {
+                panelPlafonTipo = panelPlafonSelect.value;
+                dobleCapaPlafon = dobleCapaPlafonCheckbox.checked;
+                altoPlafonDeseado = parseFloat(altoPlafonInput.value);
+                 if (isNaN(altoPlafonDeseado) || altoPlafonDeseado <= 0) {
+                     return mostrarError('Ingresa una altura válida para el plafón terminado.');
+                 }
+                 if (altoPlafonDeseado >= altoTotal) {
+                     return mostrarError('La altura del plafón debe ser menor que la altura total del espacio.');
+                 }
+                largoColgante = altoTotal - altoPlafonDeseado;
+                largoTotalColganteConAmarres = largoColgante + AMARRE_EXTRA_COLGANTE * 2;
+                mostrarInfo(`Largo estimado por colgante de plafón: ${largoTotalColganteConAmarres.toFixed(2)} m (incluye amarres).`);
+            }
+
+            // --- 3. CÁLCULOS GEOMÉTRICOS Y ÁREAS ---
+            const perimetro = 2 * (largo + ancho);
+            let areaMurosPerimetrales = perimetro * altoTotal; // Área bruta perimetral
+            let areaMurosInternos = metrosLinealesInternos * altoTotal; // Área bruta interna (una cara)
+
+            // Descontar aberturas del área total de muros (perimetrales + internos)
+            // Se asume que las aberturas pueden estar en cualquier muro
+            let areaTotalMurosBruta = areaMurosPerimetrales + areaMurosInternos;
+            let areaTotalMurosNeta = Math.max(0, areaTotalMurosBruta - areaTotalAberturas);
+
+            // Distribuir el área neta proporcionalmente (aproximación)
+            // Esto es para el cálculo de estructura y aislamiento
+            let proporcionPerimetral = areaTotalMurosBruta > 0 ? areaMurosPerimetrales / areaTotalMurosBruta : 0;
+            let areaNetaMurosPerimetrales = areaTotalMurosNeta * proporcionPerimetral;
+            let areaNetaMurosInternos = areaTotalMurosNeta * (1 - proporcionPerimetral);
+
+            // Área de superficie a cubrir (para paneles, compuesto, cinta, tornillos de panel)
+            // Perimetrales: una cara. Internos: dos caras.
+            let areaSuperficieACubrir = areaNetaMurosPerimetrales + (areaNetaMurosInternos * 2);
+
+            const areaPlafon = largo * ancho;
+
+            // --- 4. CÁLCULO DE MATERIALES ---
+            let materiales = {};
+            let warnings = [];
+
+            // --- MUROS (Perimetrales e Internos) ---
+            if (calcularMuros) {
+                const factorPoste = espaciamiento === 61 ? FACTORES.muro.poste_61 : FACTORES.muro.poste_40_6;
+                const esPanelCemento = panelMuroTipo === 'cemento';
+                const esPanelRH = panelMuroTipo === 'rh';
+                const esCalibreGrueso = calibrePoste > 25 || calibreCanal > 25;
+                const factorMultiplicadorCapa = dobleCapaMuro ? 2 : 1; // Aplica a CADA cara
+
+                // --- Definiciones de Materiales (Muros) ---
+                let panelLabel = '';
+                let compuestoFactor = dobleCapaMuro ? FACTORES.muro.compuestoStdDoble : FACTORES.muro.compuestoStd;
+                let compuestoLabel = 'Compuesto Multiusos (Redimix)';
+                let cintaFactor = FACTORES.muro.cintaPapel;
+                let cintaLabel = 'Cinta de Papel Refuerzo';
+                let cintaUnidadLongitud = LONGITUD_CINTA_PAPEL_ROLLO;
+                let tornilloFactor = dobleCapaMuro ? FACTORES.muro.tornilloPanel_Doble_S : FACTORES.muro.tornilloPanel_S;
+                let tornilloLabel = `Tornillo Panel Yeso (Tipo S - ${dobleCapaMuro ? '1-5/8" p/ Doble' : '1" o 1-1/8"'})`;
+                let tornilloFramerFactor = FACTORES.muro.tornilloFramer_Fino;
+                let tornilloFramerLabel = `Tornillo Framer (mini) (Punta Fina 7/16" o 1/2")`;
+
+                if (esPanelCemento) {
+                    panelLabel = `Panel de Cemento 1/2" ${dobleCapaMuro ? '(Doble Capa)' : ''}`;
+                    compuestoFactor = dobleCapaMuro ? FACTORES.muro.compuestoBasecoatDoble : FACTORES.muro.compuestoBasecoat;
+                    compuestoLabel = 'Compuesto Basecoat (p/ Panel Cemento)';
+                    cintaFactor = FACTORES.muro.cintaMalla;
+                    cintaLabel = 'Cinta de Malla Fibra Vidrio';
+                    cintaUnidadLongitud = LONGITUD_CINTA_MALLA_ROLLO;
+                    tornilloFactor = FACTORES.muro.tornilloPanelCemento; // Ya incluye doble capa si aplica
+                    tornilloLabel = `Tornillo p/ Panel Cemento (Especial ${dobleCapaMuro ? '1-5/8" o más' : '1-1/4"'})`;
+                    warnings.push("Panel Cemento: Usar tornillos especiales (ej. Climacoat) y cinta de malla con Basecoat.");
+                    if(dobleCapaMuro) warnings.push("Doble capa de Panel Cemento es poco común, verifica especificaciones.");
+                } else if (esPanelRH) {
+                    panelLabel = `Panel Yeso RH 1/2" ${dobleCapaMuro ? '(Doble Capa)' : ''}`;
+                    warnings.push("Panel RH: Para máxima resistencia a humedad, considera usar compuesto y cinta resistentes a moho.");
+                } else { // Estandar
+                    panelLabel = `Panel Yeso Estándar 1/2" ${dobleCapaMuro ? '(Doble Capa)' : ''}`;
+                }
+
+                // Ajustar tornillos por calibre grueso
+                if (!esPanelCemento && esCalibreGrueso) {
+                    tornilloFactor = dobleCapaMuro ? FACTORES.muro.tornilloPanel_Doble_Tek : FACTORES.muro.tornilloPanel_Tek;
+                    tornilloLabel = `Tornillo Panel Yeso (Tipo Tek Broca - ${dobleCapaMuro ? '1-5/8"' : '1" o 1-1/8"'} p/ Cal. ${calibrePoste})`;
+                    warnings.push(`Calibre ${calibrePoste}/${calibreCanal}: Usar Tornillos Tek Broca para fijar panel.`);
+                }
+                if (esCalibreGrueso) {
+                    tornilloFramerFactor = FACTORES.muro.tornilloFramer_Tek;
+                    tornilloFramerLabel = `Tornillo Framer (mini) (Tek Broca 7/16" o 1/2")`;
+                     warnings.push(`Unión perfiles Cal. ${calibrePoste}/${calibreCanal}: Usar Tornillo Framer Tek Broca.`);
+                }
+
+                // --- Calcular materiales base muros ---
+                // Materiales de superficie (paneles, compuesto, cinta, tornillos panel) - Usan areaSuperficieACubrir
+                const panelNetoMuros = areaSuperficieACubrir * FACTORES.muro.panelYeso * factorMultiplicadorCapa; // Factor capa ya está en areaSuperficieACubrir
+                const compuestoNetoMuros = areaSuperficieACubrir * compuestoFactor;
+                const cintaNetaMuros = areaSuperficieACubrir * cintaFactor;
+                const tornilloPanelNetoMuros = areaSuperficieACubrir * tornilloFactor;
+
+                // Materiales de estructura (postes, canales, tornillos framer, fijadores) - Usan areaTotalMurosNeta
+                const postesNeto = areaTotalMurosNeta * factorPoste; // Factor ya da piezas/m²
+                const canalesNeto = areaTotalMurosNeta * FACTORES.muro.canalAmarre; // Factor ya da piezas/m²
+                const tornilloFramerNeto = areaTotalMurosNeta * tornilloFramerFactor;
+                const fijadoresNeto = areaTotalMurosNeta * FACTORES.muro.fijadoresCanal;
+
+                // --- Agregar materiales a la lista ---
+                agregarMaterial(materiales, panelLabel, panelNetoMuros / AREA_HOJA_TABLAROCA, 'hojas', factorDesperdicio, true);
+                agregarMaterial(materiales, `Poste Metálico Cal. ${calibrePoste}`, postesNeto, 'piezas', factorDesperdicio, true); // Ya está en piezas
+                agregarMaterial(materiales, `Canal de Amarre Cal. ${calibreCanal}`, canalesNeto, 'piezas', factorDesperdicio, true); // Ya está en piezas
+                agregarMaterial(materiales, tornilloLabel, tornilloPanelNetoMuros, 'piezas', factorDesperdicio, true);
+                if (tornilloFramerNeto > 0) {
+                    agregarMaterial(materiales, tornilloFramerLabel, tornilloFramerNeto, 'piezas', factorDesperdicio, true);
+                }
+                agregarMaterial(materiales, compuestoLabel, compuestoNetoMuros, 'kg', factorDesperdicio, false);
+                agregarMaterial(materiales, cintaLabel, cintaNetaMuros / cintaUnidadLongitud, 'rollos', factorDesperdicio, true);
+                agregarMaterial(materiales, 'Fijadores para Canal (Clavos/Taquetes)', fijadoresNeto, 'piezas', factorDesperdicio, true);
+
+                // --- Materiales EXTRA por Aberturas ---
+                const numAberturas = numPuertas + numVentanas;
+                if (numAberturas > 0) {
+                    const postesExtraAberturas = numAberturas * FACTORES.abertura.posteExtra;
+                    const canalesExtraAberturas = numAberturas * FACTORES.abertura.canalExtra;
+                    // Los tornillos extra se calculan por abertura, no por área descontada
+                    const tornilloPanelExtraAberturas = numAberturas * FACTORES.abertura.tornilloPanelExtra * factorMultiplicadorCapa * 2; // *2 porque la abertura tiene 2 lados
+                    const tornilloFramerExtraAberturas = numAberturas * FACTORES.abertura.tornilloFramerExtra;
+                    const esquinerosAberturas = numAberturas * FACTORES.abertura.esquinero; // Solo jambas verticales
+
+                    agregarMaterial(materiales, `Poste Metálico Cal. ${calibrePoste}`, postesExtraAberturas, 'piezas', factorDesperdicio, true);
+                    agregarMaterial(materiales, `Canal de Amarre Cal. ${calibreCanal}`, canalesExtraAberturas, 'piezas', factorDesperdicio, true);
+                    agregarMaterial(materiales, tornilloLabel, tornilloPanelExtraAberturas, 'piezas', factorDesperdicio, true);
+                    agregarMaterial(materiales, tornilloFramerLabel, tornilloFramerExtraAberturas, 'piezas', factorDesperdicio, true);
+                    agregarMaterial(materiales, 'Esquinero Metálico', esquinerosAberturas, 'piezas', factorDesperdicio, true);
+                }
+
+                // --- Aislamiento ---
+                if (incluirAislamiento) {
+                    const areaTotalAislamiento = areaTotalMurosNeta; // Aislar toda la cavidad neta
+                    const peralteKey = peraltePosteCm.toFixed(2);
+                    const areaRollo = AREA_BATT_AISLAMIENTO_MAP[peralteKey] || AREA_BATT_AISLAMIENTO_MAP["6.35"];
+                    if (!AREA_BATT_AISLAMIENTO_MAP[peralteKey]) warnings.push(`No se encontró cobertura de aislamiento exacta para peralte ${peraltePosteCm}cm, usando referencia de 6.35cm.`);
+                    const aislamientoNeto = areaTotalAislamiento / areaRollo;
+                    agregarMaterial(materiales, `Aislamiento (Rollo p/ ${peraltePosteCm}cm)`, aislamientoNeto, 'rollos', factorDesperdicio, true);
+                }
+            }
+
+            // --- PLAFÓN ---
+            if (calcularPlafon) {
+                const numColgantes = Math.ceil(areaPlafon * FACTORES.plafon.numColgantesPorM2);
+                const largoTotalAlambre = numColgantes * largoTotalColganteConAmarres;
+                const pesoTotalAlambre = largoTotalAlambre * ALAMBRE_KG_POR_METRO_CAL12;
+                const factorMultiplicadorCapaPlafon = dobleCapaPlafon ? 2 : 1;
+
+                let panelPlafonLabel = `Panel Yeso Estándar 1/2" ${dobleCapaPlafon ? '(Doble Capa)' : ''}`;
+                let compuestoFactorPlafon = dobleCapaPlafon ? FACTORES.plafon.compuestoStdDoble : FACTORES.plafon.compuestoStd;
+                let tornilloFactorPlafon = dobleCapaPlafon ? FACTORES.plafon.tornilloPanel_Doble_S : FACTORES.plafon.tornilloPanel_S;
+                let tornilloPlafonLabel = `Tornillo Panel Yeso (Tipo S - ${dobleCapaPlafon ? '1-5/8" p/ Doble' : '1"'})`;
+
+                if (panelPlafonTipo === 'rh') {
+                    panelPlafonLabel = `Panel Yeso RH 1/2" ${dobleCapaPlafon ? '(Doble Capa)' : ''}`;
+                    warnings.push("Plafón RH: Considera usar compuesto y cinta resistentes a moho para máxima protección.");
+                }
+
+                const panelNetoPlafon = areaPlafon * FACTORES.plafon.panelYeso * factorMultiplicadorCapaPlafon;
+                const canaletaNeta = areaPlafon * FACTORES.plafon.canaletaCarga; // Ya da piezas/m²
+                const listonNeto = areaPlafon * FACTORES.plafon.canalListon; // Ya da piezas/m²
+                const anguloNeto = perimetro / LONGITUD_PERFIL; // Piezas
+                const tornilloPanelNetoPlafon = areaPlafon * tornilloFactorPlafon * factorMultiplicadorCapaPlafon;
+                const compuestoNetoPlafon = areaPlafon * compuestoFactorPlafon;
+                const cintaNetaPlafon = areaPlafon * FACTORES.plafon.cintaPapel; // Cinta no se duplica
+
+                agregarMaterial(materiales, panelPlafonLabel, panelNetoPlafon / AREA_HOJA_TABLAROCA, 'hojas', factorDesperdicio, true);
+                agregarMaterial(materiales, 'Canaleta de Carga Cal. 22', canaletaNeta, 'piezas', factorDesperdicio, true); // Ya está en piezas
+                agregarMaterial(materiales, 'Canal Listón Cal. 26', listonNeto, 'piezas', factorDesperdicio, true); // Ya está en piezas
+                agregarMaterial(materiales, 'Ángulo de Amarre Perimetral Cal. 26', anguloNeto, 'piezas', factorDesperdicio, true);
+                agregarMaterial(materiales, tornilloPlafonLabel, tornilloPanelNetoPlafon, 'piezas', factorDesperdicio, true);
+                // Agregar compuesto y cinta de plafón al total general si también hay muros
+                agregarMaterial(materiales, 'Compuesto Multiusos (Redimix)', compuestoNetoPlafon, 'kg', factorDesperdicio, false);
+                agregarMaterial(materiales, 'Cinta de Papel Refuerzo', cintaNetaPlafon / LONGITUD_CINTA_PAPEL_ROLLO, 'rollos', factorDesperdicio, true);
+                agregarMaterial(materiales, `Alambre Galv. Cal. 12 (~${numColgantes} colg.)`, largoTotalAlambre, 'm', factorDesperdicio, false);
+                agregarMaterial(materiales, `Alambre Galv. Cal. 12 (Peso Est.)`, pesoTotalAlambre, 'kg', factorDesperdicio, false);
+            }
+
+            // --- 5. MOSTRAR RESULTADOS Y WARNINGS ---
+            if (warnings.length > 0) {
+                mostrarWarning(warnings.join(' | '));
+            }
+            mostrarResultados(materiales, numPuertas, numVentanas, metrosLinealesInternos);
+        }
+
+        function agregarMaterial(lista, nombre, cantidadNeta, unidad, desperdicio, redondearHaciaArriba) {
+             if (cantidadNeta <= 0) return;
+             const cantidadConDesperdicio = cantidadNeta * (1 + desperdicio);
+             let cantidadCalculada;
+
+             if (redondearHaciaArriba) {
+                 cantidadCalculada = Math.ceil(cantidadConDesperdicio);
+             } else {
+                 // Redondear a 1 decimal para kg y m, 0 para otros
+                 const decimales = (unidad === 'kg' || unidad === 'm') ? 1 : 0;
+                 cantidadCalculada = parseFloat(cantidadConDesperdicio.toFixed(decimales));
+             }
+
+             // Evitar agregar si la cantidad final es 0
+             if (cantidadCalculada <= 0) return;
+
+             if (lista[nombre]) {
+                 lista[nombre].cantidad += cantidadCalculada;
+                 // Si ya existía y se vuelve a agregar redondeado, mantener redondeado
+                 lista[nombre].redondeado = lista[nombre].redondeado || redondearHaciaArriba;
+             } else {
+                 lista[nombre] = { cantidad: cantidadCalculada, unidad: unidad, redondeado: redondearHaciaArriba };
+             }
+
+             // Re-redondeo final basado en si ALGUNA vez se pidió redondear
+             if (lista[nombre].redondeado) {
+                  lista[nombre].cantidad = Math.ceil(lista[nombre].cantidad);
+             } else {
+                  const decimales = (lista[nombre].unidad === 'kg' || lista[nombre].unidad === 'm') ? 1 : 0;
+                  lista[nombre].cantidad = parseFloat(lista[nombre].cantidad.toFixed(decimales));
+             }
+             // Asegurarse de no tener cantidades 0 finales después de sumar y redondear
+              if (lista[nombre].cantidad <= 0) delete lista[nombre];
+        }
+
+        function mostrarResultados(materiales, puertasConsideradas, ventanasConsideradas, mlInternosConsiderados) {
+           if (Object.keys(materiales).length === 0) {
+               if (mensajeErrorDiv.classList.contains('hidden')) {
+                   listaMaterialesDiv.innerHTML = '<p class="text-gray-500 italic">No se calcularon materiales. Revisa las selecciones y dimensiones.</p>';
+               }
+                copyBtn.classList.add('hidden');
+               return;
+           }
+
+           const materialesOrdenados = Object.keys(materiales).sort((a, b) => a.localeCompare(b));
+           let htmlResultados = '<ul class="list-none space-y-3">';
+           materialesOrdenados.forEach(nombre => {
+               const item = materiales[nombre];
+               const cantidadFormateada = item.cantidad.toLocaleString('es-MX', {
+                   minimumFractionDigits: (item.unidad === 'kg' || item.unidad === 'm') && item.cantidad % 1 !== 0 ? 1 : 0,
+                   maximumFractionDigits: (item.unidad === 'kg' || item.unidad === 'm') ? 1 : 0
+               });
+               htmlResultados += `<li class="result-item flex justify-between items-center">
+                                     <span class="font-medium text-gray-700">${nombre}:</span>
+                                     <span class="text-lime-700 font-semibold text-lg">${cantidadFormateada} ${item.unidad}</span>
+                                  </li>`;
+           });
+           htmlResultados += '</ul>';
+
+           let notas = [];
+           if (mlInternosConsiderados > 0) notas.push(`${mlInternosConsiderados.toFixed(2)} ml de muros internos`);
+           if (puertasConsideradas > 0) notas.push(`${puertasConsideradas} puerta(s)`);
+           if (ventanasConsideradas > 0) notas.push(`${ventanasConsideradas} ventana(s)`);
+
+           if (notas.length > 0) {
+                let textoNotas = "* Cálculo considera";
+                if (mlInternosConsiderados > 0) textoNotas += ` ${mlInternosConsiderados.toFixed(2)} ml de muros internos (ambas caras)`;
+                if (puertasConsideradas > 0 || ventanasConsideradas > 0) {
+                    textoNotas += (mlInternosConsiderados > 0 ? ", incluye" : " incluye") + " materiales adicionales para";
+                    if (puertasConsideradas > 0) textoNotas += ` ${puertasConsideradas} puerta(s)`;
+                    if (ventanasConsideradas > 0) textoNotas += `${puertasConsideradas > 0 ? ' y' : ''} ${ventanasConsideradas} ventana(s)`;
+                    textoNotas += " y descuenta su área del panel.";
+                } else if (mlInternosConsiderados > 0) {
+                     textoNotas += ".";
+                }
+                 htmlResultados += `<p class="text-xs text-gray-600 mt-5">${textoNotas}</p>`;
+           }
+
+
+           listaMaterialesDiv.innerHTML = htmlResultados;
+           copyBtn.classList.remove('hidden'); // Mostrar botón copiar
+        }
+
+        function copiarResultados() {
+           const lista = document.getElementById('lista-materiales');
+           if (!lista) return;
+
+           let textoACopiar = "Lista de Materiales Estimados (Calculadora TITÁN v4.2):\n=======================================================\n";
+           const items = lista.querySelectorAll('li');
+
+           items.forEach(item => {
+               const nombre = item.querySelector('span:first-child')?.textContent || '';
+               const cantidadUnidad = item.querySelector('span:last-child')?.textContent || '';
+               if (nombre && cantidadUnidad) {
+                   textoACopiar += `${nombre.replace(':', '').trim()}: ${cantidadUnidad}\n`;
+               }
+           });
+
+           // Añadir notas, warnings e info si existen
+           const notasP = lista.querySelector('p.text-xs');
+           if (notasP) {
+               textoACopiar += "\nNotas:\n" + notasP.textContent + "\n";
+           }
+           if (!mensajeWarningDiv.classList.contains('hidden')) {
+               textoACopiar += "\nAdvertencias:\n" + mensajeWarningDiv.textContent.replace('⚠️ Atención: ', '- ') + "\n";
+           }
+            if (!mensajeInfoDiv.classList.contains('hidden')) {
+               textoACopiar += "\nInformación Adicional:\n" + mensajeInfoDiv.textContent.replace('ℹ️ Info: ', '- ') + "\n";
+           }
+            textoACopiar += "\n=======================================================\n";
+            textoACopiar += "Estimación basada en factores estándar. Verificar con fichas técnicas y profesionales.";
+
+
+           navigator.clipboard.writeText(textoACopiar)
+               .then(() => {
+                   // Éxito al copiar
+                   copyBtn.textContent = '¡Copiado!';
+                   copyBtn.classList.add('bg-green-500', 'text-white');
+                   copyBtn.classList.remove('bg-yellow-500', 'text-yellow-900');
+                   setTimeout(() => {
+                        copyBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline-block mr-1 -mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"> <path stroke-linecap="round" stroke-linejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" /> </svg> Copiar Lista`;
+                        copyBtn.classList.remove('bg-green-500', 'text-white');
+                        copyBtn.classList.add('bg-yellow-500', 'text-yellow-900');
+                   }, 1500);
+               })
+               .catch(err => {
+                   console.error('Error al copiar: ', err);
+                   alert('Error al copiar la lista. Intenta manualmente.');
+               });
+        }
+
+    </script>
+
+    </body>
 </html>
