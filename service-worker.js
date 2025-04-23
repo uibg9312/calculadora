@@ -1,45 +1,62 @@
-// service-worker.js
-
-const CACHE_NAME = 'titan-cache-v1'; // Cambia 'v1' si actualizas los archivos cacheados
+const CACHE_NAME = 'calc-tablaroca-v4.2';
 const urlsToCache = [
-  '/', // Si tu servidor sirve index.html en la raíz
-  '/index.html', // El HTML principal
-  // '/style.css', // Si tuvieras CSS externo
-  // '/script.js', // Si tuvieras JS externo
-  '/manifest.json',
-  '/icons/icon-192x192.png',
-  '/icons/icon-512x512.png'
-  // ¡OJO! No puedes cachear directamente recursos de CDNs como Tailwind o Inter font
-  // Para offline completo con esos, necesitarías descargarlos y servirlos localmente.
+    './',
+    './Calculadora Tablaroca.html',
+    './manifest.json',
+    './icons/icon-72x72.png',
+    './icons/icon-96x96.png',
+    './icons/icon-128x128.png',
+    './icons/icon-144x144.png',
+    './icons/icon-152x152.png',
+    './icons/icon-192x192.png',
+    './icons/icon-384x384.png',
+    './icons/icon-512x512.png'
 ];
 
-// Evento 'install': Se dispara cuando el navegador instala el SW.
-// Aquí es donde generalmente cacheamos los archivos estáticos principales.
 self.addEventListener('install', event => {
-  event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then(cache => {
-        console.log('Cache abierto:', CACHE_NAME);
-        // addAll toma un array de URLs, las busca, y las añade al cache.
-        // Si alguna falla, toda la operación falla.
-        return cache.addAll(urlsToCache);
-      })
-  );
+    event.waitUntil(
+        caches.open(CACHE_NAME)
+            .then(cache => {
+                console.log('Opened cache');
+                return cache.addAll(urlsToCache);
+            })
+    );
 });
 
-// Evento 'fetch': Se dispara cada vez que la página pide un recurso (HTML, CSS, JS, imagen...).
-// Aquí interceptamos la petición y decidimos si servir desde el caché o desde la red.
 self.addEventListener('fetch', event => {
-  event.respondWith(
-    caches.match(event.request) // Busca en el caché si ya tenemos la respuesta
-      .then(response => {
-        // Si encontramos la respuesta en el caché, la devolvemos.
-        if (response) {
-          return response;
-        }
-        // Si no está en el caché, vamos a la red a buscarla.
-        return fetch(event.request);
-      }
-    )
-  );
+    event.respondWith(
+        caches.match(event.request)
+            .then(response => {
+                if (response) {
+                    return response;
+                }
+                return fetch(event.request)
+                    .then(response => {
+                        if (!response || response.status !== 200 || response.type !== 'basic') {
+                            return response;
+                        }
+                        const responseToCache = response.clone();
+                        caches.open(CACHE_NAME)
+                            .then(cache => {
+                                cache.put(event.request, responseToCache);
+                            });
+                        return response;
+                    });
+            })
+    );
 });
+
+self.addEventListener('activate', event => {
+    const cacheWhitelist = [CACHE_NAME];
+    event.waitUntil(
+        caches.keys().then(cacheNames => {
+            return Promise.all(
+                cacheNames.map(cacheName => {
+                    if (cacheWhitelist.indexOf(cacheName) === -1) {
+                        return caches.delete(cacheName);
+                    }
+                })
+            );
+        })
+    );
+}); 
