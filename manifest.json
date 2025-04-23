@@ -1,22 +1,60 @@
 {
-  "name": "Calculadora TITÁN Tablaroca",
-  "short_name": "TITÁN Calc",
-  "description": "Calculadora de materiales para Tablaroca.",
-  "start_url": "/index.html", // O la ruta a tu archivo HTML principal
-  "display": "standalone", // Hace que se vea como app, sin la barra del navegador
-  "background_color": "#f7fee7", // El lime-50 que usas
-  "theme_color": "#3f6212", // El color que ya tienes en theme-color meta
-  "icons": [
-    {
-      "src": "icons/icon-192x192.png", // ¡Ya tienes este en tu HTML!
-      "sizes": "192x192",
-      "type": "image/png"
-    },
-    {
-      "src": "icons/icon-512x512.png", // Necesitas crear este icono más grande
-      "sizes": "512x512",
-      "type": "image/png"
-    }
-    // Puedes añadir más tamaños si quieres, como 72x72, 96x96, 128x128, 144x144, etc.
-  ]
-}
+    "name": "Calculadora TITÁN Tablaroca",
+    "short_name": "Calc Tablaroca",
+    "description": "Calculadora profesional para estimación de materiales de tablaroca",
+    "start_url": "./Calculadora Tablaroca.html",
+    "display": "standalone",
+    "background_color": "#f7fee7",
+    "theme_color": "#3f6212",
+    "orientation": "portrait",
+    "icons": [
+        {
+            "src": "icons/icon-72x72.png",
+            "sizes": "72x72",
+            "type": "image/png",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "icons/icon-96x96.png",
+            "sizes": "96x96",
+            "type": "image/png",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "icons/icon-128x128.png",
+            "sizes": "128x128",
+            "type": "image/png",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "icons/icon-144x144.png",
+            "sizes": "144x144",
+            "type": "image/png",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "icons/icon-152x152.png",
+            "sizes": "152x152",
+            "type": "image/png",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "icons/icon-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "icons/icon-384x384.png",
+            "sizes": "384x384",
+            "type": "image/png",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "icons/icon-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any maskable"
+        }
+    ]
+} 
