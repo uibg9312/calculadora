@@ -9,6 +9,9 @@
     <link rel="icon" href="icons/icon-192x192.png" type="image/png">
     <link rel="apple-touch-icon" href="icons/icon-192x192.png">
     <meta name="theme-color" content="#3f6212">
+    <meta name="description" content="Calculadora profesional para estimación de materiales de tablaroca">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="preconnect" href="https://rsms.me/">
     <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
 
@@ -825,8 +828,8 @@
                 if (mlInternosConsiderados > 0) textoNotas += ` ${mlInternosConsiderados.toFixed(2)} ml de muros internos (ambas caras)`;
                 if (puertasConsideradas > 0 || ventanasConsideradas > 0) {
                     textoNotas += (mlInternosConsiderados > 0 ? ", incluye" : " incluye") + " materiales adicionales para";
-                    if (puertasConsideradas > 0) textoNotas += ` ${puertasConsideradas} puerta(s)`;
-                    if (ventanasConsideradas > 0) textoNotas += `${puertasConsideradas > 0 ? ' y' : ''} ${ventanasConsideradas} ventana(s)`;
+                    if (puertasConsideradas > 0) textoNotas += ` ${puertasConsideradas} puerta(s)`
+                    if (ventanasConsideradas > 0) textoNotas += `${puertasConsideradas > 0 ? ' y' : ''} ${ventanasConsideradas} ventana(s)`
                     textoNotas += " y descuenta su área del panel.";
                 } else if (mlInternosConsiderados > 0) {
                      textoNotas += ".";
@@ -885,6 +888,19 @@
                    console.error('Error al copiar: ', err);
                    alert('Error al copiar la lista. Intenta manualmente.');
                });
+        }
+
+        // --- REGISTRO DEL SERVICE WORKER ---
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./service-worker.js')
+                    .then(registration => {
+                        console.log('ServiceWorker registration successful');
+                    })
+                    .catch(err => {
+                        console.log('ServiceWorker registration failed: ', err);
+                    });
+            });
         }
 
     </script>
